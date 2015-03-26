@@ -23,6 +23,10 @@ Api fuer das Abspeichern der Daten aus Feinstaubsensor.
 * Installiere docker und Docker-Compose
 * `docker-compose up -d`
 * warten
-* falls noch keine Datenbank existiert: `docker-compose run web python3 manage.py migrate`
+* falls noch keine Datenbank existiert:
+```
+docker-compose run web python3 manage.py reset_db
+docker-compose run web python3 manage.py migrate
+```
 
 

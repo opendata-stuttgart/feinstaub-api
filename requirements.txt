@@ -3,3 +3,4 @@ django-extensions
 djangorestframework==3.0.5
 ipython
 bpython
+psycopg2==2.6

@@ -4,7 +4,17 @@ web:
   environment:
       PYTHONUNBUFFERED: 0
       DJANGO_SETTINGS_MODULE: feinstaub.settings.base
+  links:
+   - db
   volumes:
    - .:/opt/code
   ports:
    - "8000:8000"
+data:
+  image: aexea/aexea-base
+  volumes:
+    - /home/uid1000
+db:
+  image: postgres:9.4
+  ports:
+   - "5432:5432"
