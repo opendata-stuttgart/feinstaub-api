@@ -1,0 +1,10 @@
+web:
+  build: .
+  command: "python3 manage.py runserver 0.0.0.0:8000"
+  environment:
+      PYTHONUNBUFFERED: 0
+      DJANGO_SETTINGS_MODULE: feinstaub.settings.base
+  volumes:
+   - .:/opt/code
+  ports:
+   - "8000:8000"
