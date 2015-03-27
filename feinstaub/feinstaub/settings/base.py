@@ -27,8 +27,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    # DRF
     'rest_framework',
     'rest_framework.authtoken',
+    # Local apps
+    'sensors',
 )
 
 MIDDLEWARE_CLASSES = (
