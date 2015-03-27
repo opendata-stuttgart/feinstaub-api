@@ -1,6 +1,6 @@
 # feinstaub-api
 
-Api fuer das Abspeichern der Daten aus Feinstaubsensor.
+Api fuer das Abspeichern der Daten der Feinstaubsensoren.
 
 
 ## Installationsanleitung:
@@ -16,11 +16,11 @@ Api fuer das Abspeichern der Daten aus Feinstaubsensor.
 ```pip install -r requirements.txt```
 
 
-## Mit Docker und Docker-Compose ausführen (development umgebung)
+## Mit Docker und Docker-Compose ausführen (Enwicklungsumgebung)
 
 ### Setup
 
-* Installiere docker und Docker-Compose
+* Installiere Docker und Docker-Compose
 * `docker-compose up -d`
 * warten
 * falls noch keine Datenbank existiert:
