@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
+from django.utils.timezone import now
 
 
 class SensorType(TimeStampedModel):
@@ -29,6 +30,7 @@ class SensorData(TimeStampedModel):
     # when first sensor is added that wants decimal, we will add a field for that
     value1 = models.IntegerField()
     value2 = models.IntegerField(null=True, blank=True)
+    timestamp = models.DateTimeField(default=now())
 
     def __str__(self):
         return "{sensor}: {value}".format(
@@ -39,6 +41,7 @@ class SensorLocation(TimeStampedModel):
     sensor = models.ForeignKey(Sensor)
     location = models.TextField(null=True, blank=True)
     # FIXME: geofield for lat/lon
+    timestamp = models.DateTimeField(default=now())
 
     def __str__(self):
         return "{sensor}: {location}".format(
