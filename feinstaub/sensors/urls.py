@@ -1,6 +1,14 @@
-try:
-    from django.conf.urls import *
-except ImportError:  # django < 1.4
-    from django.conf.urls.defaults import *
+# coding=utf-8
+from rest_framework import routers
+from django.conf.urls import patterns, include, url
 
-# place app url patterns here
+
+router = routers.DefaultRouter()
+
+
+urlpatterns = patterns(
+    '',
+    url(
+        regex=r'^', view=include(router.urls)
+    ),
+)
