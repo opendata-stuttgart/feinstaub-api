@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 git pull
 docker build --tag=feinstaub-prod .
 docker rm -f feinstaub feinstaub-nginx
