@@ -18,7 +18,8 @@ class Sensor(TimeStampedModel):
     uid = models.SlugField(unique=True)
     owner = models.ForeignKey(User)
     sensor_type = models.ForeignKey(SensorType)
-    description = models.CharField(max_length=10000)
+    description = models.TextField(null=True, blank=True)
+    location = models.ForeignKey("SensorLocation")
 
     def __str__(self):
         return self.uid
@@ -26,24 +27,37 @@ class Sensor(TimeStampedModel):
 
 class SensorData(TimeStampedModel):
     sensor = models.ForeignKey(Sensor)
-    # values are integer for now.
-    # when first sensor is added that wants decimal, we will add a field for that
-    value1 = models.IntegerField()
-    value2 = models.IntegerField(null=True, blank=True)
     sampling_rate = models.IntegerField(null=True, blank=True)
     timestamp = models.DateTimeField(default=now)
+    location = models.ForeignKey("SensorLocation", blank=True)
+
+    # in save set location
 
     def __str__(self):
         return "{sensor}: {value}".format(
             sensor=self.sensor, value=self.value1)
 
 
+class SensorDataValue(TimeStampedModel):
+    sensordata = models.ForeignKey(SensorData)
+    value = models.TextField()
+    value_type = models.CharField(max_length=100, choices=(
+        ('P1', '1µm particles'),
+        ('P2', '2.5µm particles'),
+        ('temperature', 'Temperature'),
+        ('humidity', 'Humidity'),
+        ('brightness', 'Brightness'),
+    ))
+
+
 class SensorLocation(TimeStampedModel):
-    sensor = models.ForeignKey(Sensor)
     location = models.TextField(null=True, blank=True)
     # FIXME: geofield for lat/lon
+    indoor = models.BooleanField()
+    owner = models.ForeignKey(User, null=True, blank=True,
+                              help_text="If not set, location is public.")
+    description = models.TextField(null=True, blank=True)
     timestamp = models.DateTimeField(default=now)
 
     def __str__(self):
-        return "{sensor}: {location}".format(
-            sensor=self.sensor, location=self.location)
+        return "{location}".format(location=self.location)
