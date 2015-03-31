@@ -29,4 +29,6 @@ docker-compose run web python3 manage.py reset_db
 docker-compose run web python3 manage.py migrate
 ```
 
+## Production-Deployment-Anleitung
 
+https://github.com/opendata-stuttgart/meta/wiki/Protokoll-installation-von-feinstaub-api-server
