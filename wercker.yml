@@ -1,0 +1,5 @@
+box: python
+build:
+    box:
+      id: mfandreas/feinstaub-api
+      tag: latest
