@@ -8,7 +8,7 @@ class SensorType(TimeStampedModel):
     uid = models.SlugField(unique=True)
     name = models.CharField(max_length=1000)
     manufacturer = models.CharField(max_length=1000)
-    description = models.CharField(max_length=10000)
+    description = models.CharField(max_length=10000, null=True, blank=True)
 
     def __str__(self):
         return self.uid
@@ -53,7 +53,7 @@ class SensorDataValue(TimeStampedModel):
 class SensorLocation(TimeStampedModel):
     location = models.TextField(null=True, blank=True)
     # FIXME: geofield for lat/lon
-    indoor = models.BooleanField()
+    indoor = models.BooleanField(default=False)
     owner = models.ForeignKey(User, null=True, blank=True,
                               help_text="If not set, location is public.")
     description = models.TextField(null=True, blank=True)
