@@ -44,6 +44,10 @@ class SensorDataValue(TimeStampedModel):
     value_type = models.CharField(max_length=100, choices=(
         ('P1', '1µm particles'),
         ('P2', '2.5µm particles'),
+        ('durP1', 'duration 1µm'),
+        ('durP2', 'duration 2.5µm'),
+        ('ratioP1', 'ratio 1µm in percent'),
+        ('ratioP2', 'ratio 2.5µm in percent'),
         ('temperature', 'Temperature'),
         ('humidity', 'Humidity'),
         ('brightness', 'Brightness'),
