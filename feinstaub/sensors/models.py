@@ -27,7 +27,8 @@ class Sensor(TimeStampedModel):
 
 class SensorData(TimeStampedModel):
     sensor = models.ForeignKey(Sensor)
-    sampling_rate = models.IntegerField(null=True, blank=True)
+    sampling_rate = models.IntegerField(null=True, blank=True,
+                                        help_text="in milliseconds")
     timestamp = models.DateTimeField(default=now)
     location = models.ForeignKey("SensorLocation", blank=True)
 
