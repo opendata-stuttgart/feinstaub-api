@@ -26,6 +26,10 @@ class SensorDataSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # custom create, because of nested list of sensordatavalues
 
+        # use sensor from authenticator
+        sensor, x = self.context['request'].successful_authenticator.authenticate(self.context['request'])
+        validated_data['sensor'] = sensor
+
         sensordatavalues = validated_data.pop('sensordatavalues')
 
         # set location based on current location of sensor
