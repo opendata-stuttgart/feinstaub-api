@@ -1,7 +1,8 @@
 from rest_framework import mixins, viewsets
 
+from .authentication import SensorUidAuthentication, IsSensorValid
 from .serializers import SensorDataSerializer
-from .models import SensorData, SensorDataValue
+from .models import SensorData
 
 
 class SensorDataView(mixins.RetrieveModelMixin,
@@ -9,6 +10,7 @@ class SensorDataView(mixins.RetrieveModelMixin,
                      viewsets.GenericViewSet):
     """ This endpoint is to POST data from the sensor to the api.
     """
-#    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SensorUidAuthentication,)
+    permission_classes = (IsSensorValid,)
     serializer_class = SensorDataSerializer
     queryset = SensorData.objects.all()
