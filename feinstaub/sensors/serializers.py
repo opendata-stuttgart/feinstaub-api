@@ -15,6 +15,8 @@ class SensorDataValueSerializer(serializers.ModelSerializer):
 
 class SensorDataSerializer(serializers.ModelSerializer):
     sensordatavalues = SensorDataValueSerializer(many=True)
+    sensor = serializers.IntegerField(required=False,
+                                      source='sensor.pk')
 
     class Meta:
         model = SensorData
