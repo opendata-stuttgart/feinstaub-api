@@ -31,15 +31,13 @@ class SensorData(TimeStampedModel):
     timestamp = models.DateTimeField(default=now)
     location = models.ForeignKey("SensorLocation", blank=True)
 
-    # in save set location
-
     def __str__(self):
-        return "{sensor}: {value}".format(
-            sensor=self.sensor, value=self.value1)
+        return "{sensor} [{value_count}]".format(
+            sensor=self.sensor, value_count=self.sensordatavalues.count())
 
 
 class SensorDataValue(TimeStampedModel):
-    sensordata = models.ForeignKey(SensorData)
+    sensordata = models.ForeignKey(SensorData, related_name='sensordatavalues')
     value = models.TextField()
     value_type = models.CharField(max_length=100, choices=(
         ('P1', '1µm particles'),
@@ -52,6 +50,13 @@ class SensorDataValue(TimeStampedModel):
         ('humidity', 'Humidity'),
         ('brightness', 'Brightness'),
     ))
+
+    def __str__(self):
+        return "{sensordata}: {value} [{value_type}]".format(
+            sensordata=self.sensordata,
+            value=self.value,
+            value_type=self.value_type,
+        )
 
 
 class SensorLocation(TimeStampedModel):
