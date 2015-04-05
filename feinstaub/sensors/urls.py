@@ -5,7 +5,7 @@ from .views import SensorDataView
 
 
 router = routers.DefaultRouter()
-router.register(r'sensor-data', SensorDataView)
+router.register(r'push-sensor-data', SensorDataView)
 
 
 urlpatterns = patterns(
