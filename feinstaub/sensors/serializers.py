@@ -31,7 +31,7 @@ class SensorDataSerializer(serializers.ModelSerializer):
         sd = SensorData.objects.create(**validated_data)
 
         for value in sensordatavalues:
-            # set sensordata to newly created sensordata
+            # set sensordata to newly created SensorData
             value['sensordata'] = sd
             SensorDataValue.objects.create(**value)
 
