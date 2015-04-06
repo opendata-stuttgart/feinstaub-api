@@ -13,4 +13,4 @@ build:
     - script:
         name: run pytest
         code: |
-          sudo docker exec pool sh -c "cd /app/tests && ./test.sh; exit"
+          sudo docker exec pool -ti py.test
