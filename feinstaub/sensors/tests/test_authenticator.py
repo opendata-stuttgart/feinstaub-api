@@ -25,6 +25,7 @@ class TestAuthenticator:
         request = factory.post(url, {'sensordatavalues': [], },
                                format='json')
 
+        # set HTTP header the same way the client would do
         request.META['HTTP_SENSOR'] = authenticator_fixture.get('uid')
 
         view_function = view.as_view({'post': 'create'})
