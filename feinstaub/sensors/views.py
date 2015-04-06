@@ -1,8 +1,17 @@
 from rest_framework import mixins, viewsets
+from rest_framework.response import Response
+from django.contrib.auth.models import User
 
 from .authentication import SensorUidAuthentication, IsSensorValid
 from .serializers import SensorDataSerializer
-from .models import SensorData
+
+from .models import (
+    Sensor,
+    SensorData,
+    SensorDataValue,
+    SensorLocation,
+    SensorType,
+)
 
 
 class SensorDataView(mixins.RetrieveModelMixin,
@@ -14,3 +23,30 @@ class SensorDataView(mixins.RetrieveModelMixin,
     permission_classes = (IsSensorValid,)
     serializer_class = SensorDataSerializer
     queryset = SensorData.objects.all()
+
+
+class StatisticsView(viewsets.ViewSet):
+
+    def list(self, request):
+        stats = {
+            'user': {
+                'count': User.objects.count(),
+                },
+            'sensor': {
+                'count': Sensor.objects.count(),
+                },
+            'sensor_data': {
+                'count': SensorData.objects.count(),
+            },
+            'sensor_data_value': {
+                'count': SensorDataValue.objects.count(),
+            },
+            'sensor_type': {
+                'count': SensorType.objects.count(),
+                'list': SensorType.objects.order_by('uid').values_list('name', flat=True)
+            },
+            'location': {
+                'count': SensorLocation.objects.count(),
+            }
+        }
+        return Response(stats)
