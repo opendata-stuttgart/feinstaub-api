@@ -1,5 +1,16 @@
 box: python
 build:
-    box:
-      id: mfandreas/feinstaub-api
-      tag: latest
+  box:
+    id: mfandreas/feinstaub-api
+    tag: latest
+  steps:
+    - script:
+        name: print system-wide docker info
+        code: |
+          docker version
+          docker info
+          docker images
+    - script:
+        name: run pytest
+        code: |
+          sudo docker exec pool sh -c "cd /app/tests && ./test.sh; exit"
