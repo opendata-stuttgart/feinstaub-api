@@ -42,6 +42,10 @@ https://github.com/opendata-stuttgart/meta/wiki/Protokoll-installation-von-feins
 docker run -d --name db-data -v /var/lib/postgres busybox
 docker run -d --restart=always --volumes-from db-data --name feinstaub-db postgres:9.4
 
+# redis
+docker run -d --name redis-data -v /data busybox
+docker run -d --restart=always --volumes-from redis-data --name feinstaub-redis redis redis-server
+
 # home
 docker run -d --name feinstaub-data -v /home/uid1000 aexea/aexea-base
 
@@ -50,7 +54,7 @@ docker build --tag=feinstaub-prod .
 # reset database on first run
 # docker run --rm -ti --volumes-from feinstaub-data --link feinstaub-db:db feinstaub-prod python3 manage.py reset_db
 # docker run --rm -ti --volumes-from feinstaub-data --link feinstaub-db:db feinstaub-prod python3 manage.py createsuperuser
-docker run -d --volumes-from feinstaub-data --link feinstaub-db:db --restart=always --name feinstaub feinstaub-prod
+docker run -d --volumes-from feinstaub-data --link feinstaub-db:db --link feinstaub-redis:redis --restart=always --name feinstaub feinstaub-prod
 docker run --name feinstaub-nginx --net="host" --volumes-from feinstaub-data --restart=always -v `pwd`/nginx.conf:/etc/nginx/nginx.conf -d nginx
 
 
