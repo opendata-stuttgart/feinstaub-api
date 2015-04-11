@@ -1,5 +1,4 @@
-from rest_framework import serializers
-from rest_framework.authtoken.models import Token
+from rest_framework import exceptions, serializers
 
 from .models import SensorData, SensorDataValue
 
@@ -27,8 +26,12 @@ class SensorDataSerializer(serializers.ModelSerializer):
         # custom create, because of nested list of sensordatavalues
 
         # use sensor from authenticator
-        sensor, x = self.context['request'].successful_authenticator.authenticate(self.context['request'])
-        validated_data['sensor'] = sensor
+        successful_authenticator = self.context['request'].successful_authenticator
+        if successful_authenticator:
+            sensor, x = successful_authenticator.authenticate(self.context['request'])
+            validated_data['sensor'] = sensor
+        else:
+            raise exceptions.NotAuthenticated
 
         sensordatavalues = validated_data.pop('sensordatavalues')
 
