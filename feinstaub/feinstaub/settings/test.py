@@ -13,6 +13,7 @@ TEST_DISCOVER_PATTERN = "test_*.py"
 if os.environ.get('TEST_ON_PLATFORM') == 'wercker':
     DATABASES = {
         'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'HOST': os.environ.get('WERCKER_POSTGRESQL_HOST', '127.0.01'),
             'NAME': os.environ.get('WERCKER_POSTGRESQL_DATABASE', 'test'),
             'TEST_NAME': os.environ.get('WERCKER_POSTGRESQL_DATABASE', 'test'),
