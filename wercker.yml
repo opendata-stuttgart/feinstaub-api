@@ -15,4 +15,4 @@ build:
     # and the code value contains the command that get executed
     - script:
         name: run pytest
-        code: PYTHONPATH=$PWD/feinstaub-api py.test
+        code: PYTHONPATH=$PWD/feinstaub py.test
