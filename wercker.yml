@@ -1,16 +1,18 @@
-box: python
+box: wercker/python
+services:
+  - bolek-kurowski/postgresql9.3@0.0.8
 build:
-  box:
-    id: mfandreas/feinstaub-api
-    tag: latest
+  # The steps that will be executed on build
   steps:
-    - script:
-        name: print system-wide docker info
-        code: |
-          docker version
-          docker info
-          docker images
+    - virtualenv:
+        name: setup virtual environment
+        python_location: /usr/bin/python3.4
+
+    # A step that executes `pip install` command.
+    - pip-install
+
+    # A custom script step, name value is used in the UI
+    # and the code value contains the command that get executed
     - script:
         name: run pytest
-        code: |
-          sudo docker exec pool -ti py.test
+        code: PYTHONPATH=$PWD/feinstaub-api py.test
