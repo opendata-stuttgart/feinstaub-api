@@ -10,7 +10,7 @@ TEST_DISCOVER_ROOT = SITE_ROOT
 TEST_DISCOVER_PATTERN = "test_*.py"
 
 
-if os.environ.get('TEST_ON_PLATFORM').lower() == 'wercker':
+if os.environ.get('TEST_ON_PLATFORM', '').lower() == 'wercker':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
