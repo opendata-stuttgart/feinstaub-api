@@ -37,6 +37,12 @@ for server installation protocol see:
 
 https://github.com/opendata-stuttgart/meta/wiki/Protokoll-installation-von-feinstaub-api-server
 
+### setup of production.py
+
+* copy ``feinstaub/settings/production_example.py`` to ``feinstaub/settings/production.py``
+* CHANGE the annotated things. really!
+
+
 ### starting/creating docker instances
 
 ```
