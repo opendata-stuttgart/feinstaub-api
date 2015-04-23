@@ -41,15 +41,22 @@ class SensorDataValue(TimeStampedModel):
     sensordata = models.ForeignKey(SensorData, related_name='sensordatavalues')
     value = models.TextField()
     value_type = models.CharField(max_length=100, choices=(
+        # ppd42ns
         ('P1', '1µm particles'),
         ('P2', '2.5µm particles'),
         ('durP1', 'duration 1µm'),
         ('durP2', 'duration 2.5µm'),
         ('ratioP1', 'ratio 1µm in percent'),
         ('ratioP2', 'ratio 2.5µm in percent'),
+        # sht10-sht15; dht11, dht22
         ('temperature', 'Temperature'),
         ('humidity', 'Humidity'),
+        #
         ('brightness', 'Brightness'),
+        # gp2y10
+        ('dust_density', 'Dust density in mg/m3')
+        ("vo_raw", 'Dust voltage raw'),
+        ("voltage", "Dust voltage calculated")
     ))
 
     def __str__(self):
