@@ -54,9 +54,9 @@ class SensorDataValue(TimeStampedModel):
         #
         ('brightness', 'Brightness'),
         # gp2y10
-        ('dust_density', 'Dust density in mg/m3')
+        ('dust_density', 'Dust density in mg/m3'),
         ("vo_raw", 'Dust voltage raw'),
-        ("voltage", "Dust voltage calculated")
+        ("voltage", "Dust voltage calculated"),
     ))
 
     def __str__(self):
