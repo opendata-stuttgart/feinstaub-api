@@ -31,6 +31,7 @@ class SensorDataValueAdmin(admin.ModelAdmin):
                     'created', 'modified']
     list_filter = ['value_type', 'sensordata__sensor',
                    'sensordata__sensor__sensor_type']
+    readonly_fields = ['sensordata']
 
 
 @admin.register(SensorLocation)
