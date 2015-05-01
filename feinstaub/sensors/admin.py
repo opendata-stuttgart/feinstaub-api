@@ -5,7 +5,7 @@ from .models import (
     SensorData,
     SensorDataValue,
     SensorLocation,
-    SensorType, 
+    SensorType,
 )
 
 
