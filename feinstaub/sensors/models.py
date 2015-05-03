@@ -68,7 +68,7 @@ class SensorDataValue(TimeStampedModel):
         ('durP10', 'duration 1µm'),
         ('durP25', 'duration 2.5µm'),
         ('ratioP10', 'ratio 1µm in percent'),
-        ('ratioP20', 'ratio 2.5µm in percent'),
+        ('ratioP25', 'ratio 2.5µm in percent'),
     ))
 
     def __str__(self):
