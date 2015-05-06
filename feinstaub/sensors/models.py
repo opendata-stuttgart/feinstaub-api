@@ -55,7 +55,7 @@ class SensorDataValue(TimeStampedModel):
         # bmp180
         ('pressure', 'Pa'),
         ('altitude', 'meter'),
-        ('pressure_sealevel', 'Pa'),
+        ('pressure_sealevel', 'Pa (sealevel)'),
         #
         ('brightness', 'Brightness'),
         # gp2y10
