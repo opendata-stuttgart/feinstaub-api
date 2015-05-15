@@ -1,6 +1,7 @@
 from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 from django.contrib.auth.models import User
+from django.core.cache import cache
 
 from .authentication import SensorUidAuthentication, IsSensorValid
 from .serializers import SensorDataSerializer
@@ -50,3 +51,10 @@ class StatisticsView(viewsets.ViewSet):
             }
         }
         return Response(stats)
+
+class CacheView(viewsets.ViewSet):
+
+    def list(self, request):
+        cache_list = [{key: cache.get(key)} for key in cache.iter_keys("location_cache_*")]
+
+        return Response(cache_list)
