@@ -1,4 +1,4 @@
-FROM aexea/django-base
+FROM aexea/aexea-base
 MAINTAINER Stuttgart Python Interest Group
 
 EXPOSE 8000
