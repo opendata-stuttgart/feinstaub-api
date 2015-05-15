@@ -69,3 +69,15 @@ docker run --name feinstaub-nginx --net="host" --volumes-from feinstaub-data --r
 ### rebuild, update
 
 ./update.sh
+
+
+
+### Notes
+
+512mb on server are not enough.
+create swap using:
+
+sudo dd if=/dev/zero of=/swapfile bs=1024 count=524288
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
