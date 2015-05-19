@@ -81,3 +81,8 @@ sudo dd if=/dev/zero of=/swapfile bs=1024 count=524288
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
+
+To make the swap reboot persistent add the following line in `/etc/fstab`:
+```
+/swapfile   swap    swap    defaults        0       0
+```
