@@ -37,39 +37,43 @@ class SensorData(TimeStampedModel):
             sensor=self.sensor, value_count=self.sensordatavalues.count())
 
 
+SENSOR_TYPE_CHOICES = (
+    # ppd42ns
+    ('P1', '1µm particles'),
+    ('P2', '2.5µm particles'),
+    ('durP1', 'duration 1µm'),
+    ('durP2', 'duration 2.5µm'),
+    ('ratioP1', 'ratio 1µm in percent'),
+    ('ratioP2', 'ratio 2.5µm in percent'),
+    # sht10-sht15; dht11, dht22; bmp180
+    ('temperature', 'Temperature'),
+    # sht10-sht15; dht11, dht22
+    ('humidity', 'Humidity'),
+    # bmp180
+    ('pressure', 'Pa'),
+    ('altitude', 'meter'),
+    ('pressure_sealevel', 'Pa (sealevel)'),
+    #
+    ('brightness', 'Brightness'),
+    # gp2y10
+    ('dust_density', 'Dust density in mg/m3'),
+    ("vo_raw", 'Dust voltage raw'),
+    ("voltage", "Dust voltage calculated"),
+    # dsm501a
+    ('P10', '1µm particles'),   # identical to P1
+    ('P25', '2.5µm particles'),  # identical to P2
+    ('durP10', 'duration 1µm'),
+    ('durP25', 'duration 2.5µm'),
+    ('ratioP10', 'ratio 1µm in percent'),
+    ('ratioP25', 'ratio 2.5µm in percent'),
+)
+
+
 class SensorDataValue(TimeStampedModel):
+
     sensordata = models.ForeignKey(SensorData, related_name='sensordatavalues')
     value = models.TextField()
-    value_type = models.CharField(max_length=100, choices=(
-        # ppd42ns
-        ('P1', '1µm particles'),
-        ('P2', '2.5µm particles'),
-        ('durP1', 'duration 1µm'),
-        ('durP2', 'duration 2.5µm'),
-        ('ratioP1', 'ratio 1µm in percent'),
-        ('ratioP2', 'ratio 2.5µm in percent'),
-        # sht10-sht15; dht11, dht22; bmp180
-        ('temperature', 'Temperature'),
-        # sht10-sht15; dht11, dht22
-        ('humidity', 'Humidity'),
-        # bmp180
-        ('pressure', 'Pa'),
-        ('altitude', 'meter'),
-        ('pressure_sealevel', 'Pa (sealevel)'),
-        #
-        ('brightness', 'Brightness'),
-        # gp2y10
-        ('dust_density', 'Dust density in mg/m3'),
-        ("vo_raw", 'Dust voltage raw'),
-        ("voltage", "Dust voltage calculated"),
-        # dsm501a
-        ('P10', '1µm particles'),   # identical to P1
-        ('P25', '2.5µm particles'),  # identical to P2
-        ('durP10', 'duration 1µm'),
-        ('durP25', 'duration 2.5µm'),
-        ('ratioP10', 'ratio 1µm in percent'),
-        ('ratioP25', 'ratio 2.5µm in percent'),
-    ))
+    value_type = models.CharField(max_length=100, choices=SENSOR_TYPE_CHOICES)
 
     def __str__(self):
         return "{sensordata}: {value} [{value_type}]".format(
