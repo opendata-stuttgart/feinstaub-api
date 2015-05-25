@@ -74,6 +74,8 @@ docker run --name feinstaub-nginx --net="host" --volumes-from feinstaub-data --r
 
 ### Notes
 
+## swap
+
 512mb on server are not enough.
 create swap using:
 
@@ -81,3 +83,23 @@ sudo dd if=/dev/zero of=/swapfile bs=1024 count=524288
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
+
+## production database for development
+
+### on production
+
+``
+docker exec feinstaub-db pg_dump -Fc -h localhost -v -U postgres feinstaub > feinstaub-backup.sql
+``
+
+### on development
+
+get ipaddress of postgres-container:
+``
+docker inspect feinstaubapi_db_1 | grep IPAddress
+``
+
+restore database:
+``
+pg_restore -C -v -h [ipaddress-of-db-container] -U postgres -d feinstaub feinstaub-backup.sql
+``
