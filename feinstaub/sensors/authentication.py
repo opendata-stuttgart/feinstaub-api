@@ -2,7 +2,7 @@ from rest_framework import authentication
 from rest_framework import permissions
 from rest_framework import exceptions
 
-from .models import Sensor
+from .models import Sensor, SensorData
 
 
 class IsSensorValid(permissions.BasePermission):
@@ -11,7 +11,11 @@ class IsSensorValid(permissions.BasePermission):
         # sensor has owner
         # owner can not be checked, because the sensor push has
         # no SessionAuthentication or TokenAuthentication
-        return obj.owner is not None
+        if isinstance(obj, SensorData):
+            obj = obj.sensor
+        if hasattr(obj, 'owner'):
+            return obj.owner is not None
+        return None
 
 
 class SensorUidAuthentication(authentication.BaseAuthentication):
