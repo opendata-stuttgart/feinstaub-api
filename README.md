@@ -69,7 +69,7 @@ docker run --name feinstaub-nginx --net="host" --volumes-from feinstaub-data --r
 ### rebuild, update
 
 ./update.sh
-
+```
 
 
 ### Notes
@@ -78,11 +78,16 @@ docker run --name feinstaub-nginx --net="host" --volumes-from feinstaub-data --r
 
 512mb on server are not enough.
 create swap using:
-
+```
 sudo dd if=/dev/zero of=/swapfile bs=1024 count=524288
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
+
+To make the swap reboot persistent add the following line in `/etc/fstab`:
+```
+/swapfile   swap    swap    defaults        0       0
+```
 
 ## production database for development
 
@@ -103,3 +108,4 @@ restore database:
 ``
 pg_restore -C -v -h [ipaddress-of-db-container] -U postgres -d feinstaub feinstaub-backup.sql
 ``
+```
