@@ -72,8 +72,9 @@ SENSOR_TYPE_CHOICES = (
 class SensorDataValue(TimeStampedModel):
 
     sensordata = models.ForeignKey(SensorData, related_name='sensordatavalues')
-    value = models.TextField()
-    value_type = models.CharField(max_length=100, choices=SENSOR_TYPE_CHOICES)
+    value = models.TextField(db_index=True)
+    value_type = models.CharField(max_length=100, choices=SENSOR_TYPE_CHOICES,
+                                  db_index=True)
 
     def __str__(self):
         return "{sensordata}: {value} [{value_type}]".format(
