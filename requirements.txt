@@ -11,3 +11,5 @@ pytz
 opbeat
 django-redis
 pandas
+Pillow
+python-dateutil
