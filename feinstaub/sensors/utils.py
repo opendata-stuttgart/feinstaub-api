@@ -6,11 +6,13 @@ from .models import (
     SensorDataValue,
     SensorLocation,
     SENSOR_TYPE_CHOICES,
-) 
+)
+
 
 def calculate_datatable():
     for location in SensorLocation.objects.all():
         calculate_datatable_location(location)
+
 
 def calculate_datatable_location(location):
     # calculate for each location per day a table with all sensor values
