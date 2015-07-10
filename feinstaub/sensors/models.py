@@ -66,6 +66,8 @@ SENSOR_TYPE_CHOICES = (
     ('durP25', 'duration 2.5µm'),
     ('ratioP10', 'ratio 1µm in percent'),
     ('ratioP25', 'ratio 2.5µm in percent'),
+    ##
+    ('door_state', 'door state (open/closed)'),
 )
 
 
