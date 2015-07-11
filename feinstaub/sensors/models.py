@@ -10,6 +10,9 @@ class SensorType(TimeStampedModel):
     manufacturer = models.CharField(max_length=1000)
     description = models.CharField(max_length=10000, null=True, blank=True)
 
+    class Meta:
+        ordering = ['name', ]
+
     def __str__(self):
         return self.uid
 
@@ -20,6 +23,9 @@ class Sensor(TimeStampedModel):
     sensor_type = models.ForeignKey(SensorType)
     description = models.TextField(null=True, blank=True)
     location = models.ForeignKey("SensorLocation")
+
+    class Meta:
+        ordering = ['uid', ]
 
     def __str__(self):
         return self.uid
@@ -94,6 +100,9 @@ class SensorLocation(TimeStampedModel):
                               help_text="If not set, location is public.")
     description = models.TextField(null=True, blank=True)
     timestamp = models.DateTimeField(default=now)
+
+    class Meta:
+        ordering = ['location', ]
 
     def __str__(self):
         return "{location}".format(location=self.location)
