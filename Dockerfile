@@ -6,7 +6,6 @@ EXPOSE 8000
 USER root
 RUN apt-get update && apt-get install -y ttf-dejavu-core
 RUN easy_install3 -U pip
-USER uid1000
 
 ADD requirements.txt /opt/code/requirements.txt
 WORKDIR /opt/code
