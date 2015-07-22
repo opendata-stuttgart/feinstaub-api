@@ -14,10 +14,10 @@ ADD . /opt/code
 
 RUN chown -R uid1000: /opt
 
-WORKDIR feinstaub
+WORKDIR /opt/code/feinstaub
 
 # uid1000 is created in aexea-base
 USER uid1000
 
 # production stuff
-CMD ["/bin/bash ./start.sh"]
+CMD ["/bin/bash /opt/code/feinstaub/start.sh"]
