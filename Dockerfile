@@ -20,4 +20,4 @@ WORKDIR /opt/code/feinstaub
 USER uid1000
 
 # production stuff
-CMD ["/bin/bash start.sh"]
+CMD ["./start.sh"]
