@@ -1,4 +1,4 @@
-FROM aexea/django-base
+FROM aexea/aexea-base
 MAINTAINER Stuttgart Python Interest Group
 
 EXPOSE 8000
@@ -9,7 +9,7 @@ RUN easy_install3 -U pip
 
 ADD requirements.txt /opt/code/requirements.txt
 WORKDIR /opt/code
-RUN pip3 install -Ur requirements.txt
+RUN pip3 install --find-links=http://pypi.qax.io/wheels/ -Ur requirements.txt
 ADD . /opt/code
 
 RUN chown -R uid1000: /opt
