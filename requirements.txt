@@ -13,3 +13,4 @@ django-redis
 pandas
 Pillow
 python-dateutil
+django-flat-theme
