@@ -83,6 +83,7 @@ sudo dd if=/dev/zero of=/swapfile bs=1024 count=524288
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
+```
 
 To make the swap reboot persistent add the following line in `/etc/fstab`:
 ```
@@ -95,6 +96,11 @@ To make the swap reboot persistent add the following line in `/etc/fstab`:
 
 ``
 docker exec feinstaub-db pg_dump -Fc -h localhost -v -U postgres feinstaub > feinstaub-backup.sql
+``
+
+even better:  
+``
+docker run --rm -ti -v `pwd`:/root --link feinstaub-db:db postgres:9.4 pg_dump -U postgres -h db feinstaub -f /root/feinstaub-db.pgdump
 ``
 
 ### on development
