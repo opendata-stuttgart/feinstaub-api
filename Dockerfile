@@ -20,4 +20,5 @@ WORKDIR /opt/code/feinstaub
 USER uid1000
 
 # production stuff
-CMD ["./start.sh"]
+ENTRYPOINT ["./start.sh"]
+CMD ["web"]
