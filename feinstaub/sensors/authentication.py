@@ -2,7 +2,7 @@ from rest_framework import authentication
 from rest_framework import permissions
 from rest_framework import exceptions
 
-from .models import Sensor, SensorData
+from .models import Node, SensorData
 
 
 class IsSensorValid(permissions.BasePermission):
@@ -18,15 +18,18 @@ class IsSensorValid(permissions.BasePermission):
         return None
 
 
-class SensorUidAuthentication(authentication.BaseAuthentication):
+class NodeUidAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
-        sensor_uid = request.META.get('HTTP_SENSOR')
-        if not sensor_uid:
-            return None
+        node_uid = request.META.get('HTTP_NODE')
+        if not node_uid:
+            # compatibility
+            node_uid = request.META.get('HTTP_SENSOR')
+            if not node_uid:
+                return None
 
         try:
-            sensor = Sensor.objects.get(uid=sensor_uid)
-        except Sensor.DoesNotExist:
-            raise exceptions.AuthenticationFailed('Sensor not found in database.')
+            node = Node.objects.get(uid=node_uid)
+        except Node.DoesNotExist:
+            raise exceptions.AuthenticationFailed('Node not found in database.')
 
-        return (sensor, None)
+        return (node, None)

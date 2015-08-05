@@ -1,6 +1,7 @@
 # coding=utf-8
 from django.contrib import admin
 from .models import (
+    Node,
     Sensor,
     SensorData,
     SensorDataValue,
@@ -9,12 +10,20 @@ from .models import (
 )
 
 
+@admin.register(Node)
+class NodeAdmin(admin.ModelAdmin):
+    search_fields = ['uid', 'description']
+    list_display = ['uid', 'owner', 'location',
+                    'description', 'created', 'modified']
+    list_filter = ['owner', 'location']
+
+
 @admin.register(Sensor)
 class SensorAdmin(admin.ModelAdmin):
-    search_fields = ['uid', 'description']
-    list_display = ['uid', 'owner', 'sensor_type', 'location',
+    search_fields = ['sensor__uid', 'description']
+    list_display = ['sensor__uid', 'pin', 'sensor_type',
                     'description', 'created', 'modified']
-    list_filter = ['owner', 'sensor_type', 'location']
+    list_filter = ['sensor__owner', 'sensor_type']
 
 
 @admin.register(SensorData)
