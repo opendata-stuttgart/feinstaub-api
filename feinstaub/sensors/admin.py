@@ -23,6 +23,7 @@ class SensorDataAdmin(admin.ModelAdmin):
     list_display = ['sensor', 'sampling_rate', 'timestamp',
                     'location', 'created', 'modified']
     list_filter = ['sensor', 'location', 'sensor__sensor_type']
+    show_full_result_count = False
 
 
 @admin.register(SensorDataValue)
@@ -32,6 +33,7 @@ class SensorDataValueAdmin(admin.ModelAdmin):
     list_filter = ['value_type', 'sensordata__sensor',
                    'sensordata__sensor__sensor_type']
     readonly_fields = ['sensordata']
+    show_full_result_count = False
 
 
 @admin.register(SensorLocation)
