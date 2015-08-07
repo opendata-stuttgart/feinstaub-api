@@ -4,6 +4,9 @@ web:
   environment:
       PYTHONUNBUFFERED: 0
       DJANGO_SETTINGS_MODULE: feinstaub.settings.base
+  entrypoint:
+   - 'python3'
+   - 'manage.py'
   links:
    - db
    - redis

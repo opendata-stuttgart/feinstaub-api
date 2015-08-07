@@ -115,3 +115,17 @@ restore database:
 pg_restore -C -v -h [ipaddress-of-db-container] -U postgres -d feinstaub feinstaub-backup.sql
 ``
 ```
+
+#### dump development database
+
+add volume mount to db container:
+```
+  volumes:
+   - .:/opt/code
+```
+
+and run dump command:
+
+```
+docker-compose run db pg_dump -Fc -h db -v -U postgres feinstaub -f /opt/code/feinstaub-api-db.dump
+```

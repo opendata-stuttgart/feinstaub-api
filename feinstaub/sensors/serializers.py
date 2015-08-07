@@ -28,15 +28,19 @@ class SensorDataSerializer(serializers.ModelSerializer):
         # use sensor from authenticator
         successful_authenticator = self.context['request'].successful_authenticator
         if successful_authenticator:
-            sensor, x = successful_authenticator.authenticate(self.context['request'])
-            validated_data['sensor'] = sensor
+            node, x = successful_authenticator.authenticate(self.context['request'])
+            if node.sensor_set.count() == 1:
+                validated_data['sensor'] = node.sensor_set.first()
+            else:
+                # FIXME get pin somehow. think about that!!
+                pass
         else:
             raise exceptions.NotAuthenticated
 
         sensordatavalues = validated_data.pop('sensordatavalues')
 
         # set location based on current location of sensor
-        validated_data['location'] = validated_data['sensor'].location
+        validated_data['location'] = validated_data['sensor'].node.location
         sd = SensorData.objects.create(**validated_data)
 
         for value in sensordatavalues:

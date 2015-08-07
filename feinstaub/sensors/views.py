@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 
-from .authentication import SensorUidAuthentication, IsSensorValid
+from .authentication import NodeUidAuthentication, IsSensorValid
 from .serializers import SensorDataSerializer
 
 from .models import (
@@ -29,7 +29,7 @@ class SensorDataView(mixins.RetrieveModelMixin,
                      viewsets.GenericViewSet):
     """ This endpoint is to POST data from the sensor to the api.
     """
-    authentication_classes = (SensorUidAuthentication,)
+    authentication_classes = (NodeUidAuthentication,)
     permission_classes = (IsSensorValid,)
     serializer_class = SensorDataSerializer
     queryset = SensorData.objects.all()

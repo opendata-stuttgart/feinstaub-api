@@ -17,10 +17,9 @@ class SensorType(TimeStampedModel):
         return self.uid
 
 
-class Sensor(TimeStampedModel):
+class Node(TimeStampedModel):
     uid = models.SlugField(unique=True)
     owner = models.ForeignKey(User)
-    sensor_type = models.ForeignKey(SensorType)
     description = models.TextField(null=True, blank=True)
     location = models.ForeignKey("SensorLocation")
 
@@ -29,6 +28,20 @@ class Sensor(TimeStampedModel):
 
     def __str__(self):
         return self.uid
+
+
+class Sensor(TimeStampedModel):
+    node = models.ForeignKey(Node)
+    pin = models.CharField(max_length=10, default="-",
+                           help_text="differentiate the sensors on one node by giving pin used")
+    sensor_type = models.ForeignKey(SensorType)
+    description = models.TextField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('node', 'pin')
+
+    def __str__(self):
+        return "{} {}".format(self.node, self.pin)
 
 
 class SensorData(TimeStampedModel):
