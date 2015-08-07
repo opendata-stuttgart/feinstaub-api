@@ -38,7 +38,6 @@ class Sensor(TimeStampedModel):
     description = models.TextField(null=True, blank=True)
 
     class Meta:
-        ordering = ['uid', ]
         unique_together = ('node', 'pin')
 
     def __str__(self):

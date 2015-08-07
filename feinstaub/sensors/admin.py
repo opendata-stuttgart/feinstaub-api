@@ -20,10 +20,10 @@ class NodeAdmin(admin.ModelAdmin):
 
 @admin.register(Sensor)
 class SensorAdmin(admin.ModelAdmin):
-    search_fields = ['sensor__uid', 'description']
-    list_display = ['sensor__uid', 'pin', 'sensor_type',
+    search_fields = ['node__uid', 'description']
+    list_display = ['node', 'pin', 'sensor_type',
                     'description', 'created', 'modified']
-    list_filter = ['sensor__owner', 'sensor_type']
+    list_filter = ['node__owner', 'sensor_type']
 
 
 @admin.register(SensorData)
