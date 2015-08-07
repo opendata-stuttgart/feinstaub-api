@@ -27,7 +27,8 @@ class TestSensorDataPushFull:
                                format='json')
 
         # authenticate sensor
-        request.META['HTTP_SENSOR'] = sensor.uid
+        request.META['HTTP_SENSOR'] = sensor.node.uid
+        # FIXME: test for HTTP_NODE
 
         view_function = view.as_view({'post': 'create'})
         response = view_function(request)
@@ -42,7 +43,7 @@ class TestSensorDataPushFull:
         assert sd.sensordatavalues.get(value_type="P2").value ==\
             str(data_fixture['sensordatavalues'][1]['value'])
 
-        assert sd.location == sensor.location
+        assert sd.location == sensor.node.location
 
         cest = pytz.timezone('Europe/Berlin')
         assert str(cest.normalize(sd.timestamp)) == data_fixture['timestamp']

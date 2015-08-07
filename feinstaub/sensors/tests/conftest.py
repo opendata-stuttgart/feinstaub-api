@@ -1,6 +1,6 @@
 import pytest
 
-from sensors.models import Sensor, SensorLocation, SensorType
+from sensors.models import Sensor, SensorLocation, SensorType, Node
 
 PASSWORD = 'secret'
 EMAIL = 'test@example.com'
@@ -38,9 +38,15 @@ def sensor_type():
 
 
 @pytest.fixture
-def sensor(logged_in_user, sensor_type, location):
-    s, x = Sensor.objects.get_or_create(uid='test123',
-                                        owner=logged_in_user,
-                                        sensor_type=sensor_type,
-                                        location=location)
+def node(logged_in_user, location):
+    n, x = Node.objects.get_or_create(uid='test123',
+                                      owner=logged_in_user,
+                                      location=location)
+    return n
+
+
+@pytest.fixture
+def sensor(logged_in_user, sensor_type, node):
+    s, x = Sensor.objects.get_or_create(node=node,
+                                        sensor_type=sensor_type)
     return s

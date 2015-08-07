@@ -30,7 +30,8 @@ class TestSensorDataPush:
                                      sensordatavalue_fixture.get('value'), },
                                format='json')
 
-        request.META['HTTP_SENSOR'] = sensor.uid
+        # FIXME: test for HTTP_NODE
+        request.META['HTTP_SENSOR'] = sensor.node.uid
 
         view_function = view.as_view({'post': 'create'})
         response = view_function(request)
