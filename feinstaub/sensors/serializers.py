@@ -40,7 +40,7 @@ class SensorDataSerializer(serializers.ModelSerializer):
         sensordatavalues = validated_data.pop('sensordatavalues')
 
         # set location based on current location of sensor
-        validated_data['location'] = validated_data['sensor'].location
+        validated_data['location'] = validated_data['sensor'].node.location
         sd = SensorData.objects.create(**validated_data)
 
         for value in sensordatavalues:
