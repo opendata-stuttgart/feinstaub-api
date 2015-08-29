@@ -41,10 +41,10 @@ class StatisticsView(viewsets.ViewSet):
         stats = {
             'user': {
                 'count': User.objects.count(),
-                },
+            },
             'sensor': {
                 'count': Sensor.objects.count(),
-                },
+            },
             'sensor_data': {
                 'count': SensorData.objects.count(),
             },
@@ -165,7 +165,7 @@ class KindleView(viewsets.ViewSet):
             draw.text((pos + 25, yoffset),
                       icons[mapping[d['weather_icon'][0:2]]],
                       0, font=self.get_font(50))
-            draw.text((pos, yoffset+50),
+            draw.text((pos, yoffset + 50),
                       d['weather_desc'],
                       0, font=self.get_font(8))
             draw.text((pos + 10, yoffset + 80),
@@ -186,7 +186,7 @@ class KindleView(viewsets.ViewSet):
             pos += 100
 
         for pos in range(0, 600, 100):
-            draw.line((pos, 20+20, pos, 420), fill=170)
+            draw.line((pos, 20 + 20, pos, 420), fill=170)
         draw.line((0, 215, 600, 215), fill=170)
 
 #        txt = ' '.join([i for i,j in icons.itervalues()])
