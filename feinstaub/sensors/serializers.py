@@ -103,5 +103,5 @@ class NodeSerializer(serializers.ModelSerializer):
         fields = ('id', 'sensors', 'uid', 'owner', 'location', 'last_data_push')
 
     def get_last_data_push(self, obj):
-        x = Node.objects.get(pk=5).sensors.order_by('-sensordatas__timestamp')[:1].values_list('sensordatas__timestamp', flat=True)
+        x = obj.sensors.order_by('-sensordatas__timestamp')[:1].values_list('sensordatas__timestamp', flat=True)
         return x[0] if x else None
