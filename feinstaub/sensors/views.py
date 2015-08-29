@@ -12,10 +12,11 @@ from django.http import HttpResponse
 from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 
-from .authentication import NodeUidAuthentication, IsSensorValid
-from .serializers import SensorDataSerializer
+from .authentication import IsSensorValid, NodeOwnerPermission, NodeUidAuthentication
+from .serializers import SensorDataSerializer, NodeSerializer
 
 from .models import (
+    Node,
     Sensor,
     SensorData,
     SensorDataValue,
@@ -33,6 +34,21 @@ class SensorDataView(mixins.RetrieveModelMixin,
     permission_classes = (IsSensorValid,)
     serializer_class = SensorDataSerializer
     queryset = SensorData.objects.all()
+
+
+class NodeView(mixins.ListModelMixin,
+               mixins.RetrieveModelMixin,
+               viewsets.GenericViewSet):
+    """ Show all nodes belonging to authenticated user
+    """
+    permission_classes = (NodeOwnerPermission,)
+    serializer_class = NodeSerializer
+    queryset = Node.objects.all()
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated():
+            return Node.objects.filter(owner=self.request.user)
+        return Node.objects.none()
 
 
 class StatisticsView(viewsets.ViewSet):

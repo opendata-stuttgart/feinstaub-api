@@ -1,6 +1,6 @@
 from rest_framework import exceptions, serializers
 
-from .models import SensorData, SensorDataValue
+from .models import SensorData, SensorDataValue, Node
 
 
 class SensorDataValueSerializer(serializers.ModelSerializer):
@@ -49,3 +49,8 @@ class SensorDataSerializer(serializers.ModelSerializer):
             SensorDataValue.objects.create(**value)
 
         return sd
+
+
+class NodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Node
