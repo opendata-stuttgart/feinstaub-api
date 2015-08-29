@@ -63,7 +63,7 @@ class NestedSensorDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SensorData
-        fields = ('sensor', 'sampling_rate', 'timestamp', 'sensordatavalues')
+        fields = ('id', 'sampling_rate', 'timestamp', 'sensordatavalues')
         read_only = ('location')
 
 
