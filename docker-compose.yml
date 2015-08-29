@@ -24,5 +24,3 @@ redis:
     - "6379:6379"
 db:
   image: postgres:9.4
-  ports:
-   - "5432:5432"
