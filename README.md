@@ -114,7 +114,6 @@ restore database:
 ``
 pg_restore -C -v -h [ipaddress-of-db-container] -U postgres -d feinstaub feinstaub-backup.sql
 ``
-```
 
 #### dump development database
 
