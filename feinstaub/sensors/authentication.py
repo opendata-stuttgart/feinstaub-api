@@ -33,3 +33,10 @@ class NodeUidAuthentication(authentication.BaseAuthentication):
             raise exceptions.AuthenticationFailed('Node not found in database.')
 
         return (node, None)
+
+
+class NodeOwnerPermission(permissions.BasePermission):
+    """Checks if authenticated user is owner of the node"""
+
+    def has_object_permission(self, request, view, obj):
+        return request.user == obj.owner
