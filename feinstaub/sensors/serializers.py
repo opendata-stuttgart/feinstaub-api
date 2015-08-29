@@ -58,8 +58,14 @@ class SensorDataSerializer(serializers.ModelSerializer):
         return sd
 
 
+class NestedSensorDataValueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SensorDataValue
+        fields = ('id', 'value', 'value_type')
+
+
 class NestedSensorDataSerializer(serializers.ModelSerializer):
-    sensordatavalues = SensorDataValueSerializer(many=True)
+    sensordatavalues = NestedSensorDataValueSerializer(many=True)
 
     class Meta:
         model = SensorData
