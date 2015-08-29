@@ -31,7 +31,7 @@ class Node(TimeStampedModel):
 
 
 class Sensor(TimeStampedModel):
-    node = models.ForeignKey(Node)
+    node = models.ForeignKey(Node, related_name="sensors")
     pin = models.CharField(max_length=10, default="-",
                            help_text="differentiate the sensors on one node by giving pin used")
     sensor_type = models.ForeignKey(SensorType)
@@ -45,7 +45,7 @@ class Sensor(TimeStampedModel):
 
 
 class SensorData(TimeStampedModel):
-    sensor = models.ForeignKey(Sensor)
+    sensor = models.ForeignKey(Sensor, related_name="sensordatas")
     sampling_rate = models.IntegerField(null=True, blank=True,
                                         help_text="in milliseconds")
     timestamp = models.DateTimeField(default=now)

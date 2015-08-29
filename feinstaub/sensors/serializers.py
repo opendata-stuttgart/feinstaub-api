@@ -29,8 +29,8 @@ class SensorDataSerializer(serializers.ModelSerializer):
         successful_authenticator = self.context['request'].successful_authenticator
         if successful_authenticator:
             node, x = successful_authenticator.authenticate(self.context['request'])
-            if node.sensor_set.count() == 1:
-                validated_data['sensor'] = node.sensor_set.first()
+            if node.sensors.count() == 1:
+                validated_data['sensor'] = node.sensors.first()
             else:
                 # FIXME get pin somehow. think about that!!
                 pass
