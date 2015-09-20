@@ -3,7 +3,13 @@ from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 
 from .authentication import IsSensorValid, OwnerPermission, NodeUidAuthentication
-from .serializers import SensorDataSerializer, NodeSerializer, SensorSerializer
+from .serializers import (
+    SensorDataSerializer,
+    NodeSerializer,
+    SensorSerializer,
+    SensorDataValueSerializer,
+    VerboseSensorDataValueSerializer
+)
 
 from .models import (
     Node,
@@ -44,22 +50,26 @@ class SensorView(mixins.ListModelMixin,
         return Sensor.objects.none()
 
 
-class SensorDataView(mixins.ListModelMixin,
-                     mixins.RetrieveModelMixin,
-                     viewsets.GenericViewSet):
+class SensorDataValueView(mixins.ListModelMixin,
+                          mixins.RetrieveModelMixin,
+                          viewsets.GenericViewSet):
     """ This endpoint is to download sensor data from the api.
     """
     permission_classes = (OwnerPermission,)
-    serializer_class = SensorDataSerializer
-    queryset = SensorData.objects.all()
+    serializer_class = VerboseSensorDataValueSerializer
+    queryset = SensorDataValue.objects.all()
     paginate_by = 10
     paginate_by_param = 'page_size'
     max_paginate_by = 100
 
     def get_queryset(self):
         if self.request.user.is_authenticated():
-            return SensorData.objects.filter(sensor__node__owner=self.request.user)
-        return SensorData.objects.none()
+            qs = SensorDataValue.objects.filter(sensordata__sensor__node__owner=self.request.user)
+            sensor_id = self.request.query_params.get('sensor', None)
+            if sensor_id:
+                qs = qs.filter(sensordata__sensor_id=sensor_id)
+            return qs
+        return SensorDataValue.objects.none()
 
 
 class NodeView(mixins.ListModelMixin,

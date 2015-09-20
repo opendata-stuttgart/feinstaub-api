@@ -119,3 +119,11 @@ class SensorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sensor
         fields = ('id', 'description', 'pin', 'sensor_type')
+
+
+class VerboseSensorDataValueSerializer(serializers.ModelSerializer):
+    sensordata = NestedSensorDataSerializer()
+
+    class Meta:
+        model = SensorDataValue
+        fields = ('value', 'value_type', 'sensordata')

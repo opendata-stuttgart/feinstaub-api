@@ -4,7 +4,7 @@ from django.conf.urls import patterns, include, url
 from .views import (
     NodeView,
     PostSensorDataView,
-    SensorDataView,
+    SensorDataValueView,
     SensorView,
     StatisticsView,
 )
@@ -13,6 +13,7 @@ router = routers.DefaultRouter()
 router.register(r'push-sensor-data', PostSensorDataView)
 router.register(r'node', NodeView)
 router.register(r'sensor', SensorView)
+router.register(r'value', SensorDataValueView)
 router.register(r'statistics', StatisticsView, base_name='statistics')
 
 
