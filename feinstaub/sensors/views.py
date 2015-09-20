@@ -7,8 +7,7 @@ from .serializers import (
     SensorDataSerializer,
     NodeSerializer,
     SensorSerializer,
-    SensorDataValueSerializer,
-    VerboseSensorDataValueSerializer
+    VerboseSensorDataSerializer,
 )
 
 from .models import (
@@ -50,26 +49,27 @@ class SensorView(mixins.ListModelMixin,
         return Sensor.objects.none()
 
 
-class SensorDataValueView(mixins.ListModelMixin,
-                          mixins.RetrieveModelMixin,
-                          viewsets.GenericViewSet):
+class SensorDataView(mixins.ListModelMixin,
+                     mixins.RetrieveModelMixin,
+                     viewsets.GenericViewSet):
     """ This endpoint is to download sensor data from the api.
     """
     permission_classes = (OwnerPermission,)
-    serializer_class = VerboseSensorDataValueSerializer
-    queryset = SensorDataValue.objects.all()
+    serializer_class = VerboseSensorDataSerializer
+    queryset = SensorData.objects.all()
     paginate_by = 10
     paginate_by_param = 'page_size'
     max_paginate_by = 100
 
     def get_queryset(self):
+        # FIXME: add modified filter (and limit to newer values (based on timestamp!))
         if self.request.user.is_authenticated():
-            qs = SensorDataValue.objects.filter(sensordata__sensor__node__owner=self.request.user)
+            qs = SensorData.objects.filter(sensor__node__owner=self.request.user).order_by('-timestamp')
             sensor_id = self.request.query_params.get('sensor', None)
             if sensor_id:
-                qs = qs.filter(sensordata__sensor_id=sensor_id)
+                qs = qs.filter(sensor_id=sensor_id)
             return qs
-        return SensorDataValue.objects.none()
+        return SensorData.objects.none()
 
 
 class NodeView(mixins.ListModelMixin,

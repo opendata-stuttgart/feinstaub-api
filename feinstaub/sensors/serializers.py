@@ -121,9 +121,10 @@ class SensorSerializer(serializers.ModelSerializer):
         fields = ('id', 'description', 'pin', 'sensor_type')
 
 
-class VerboseSensorDataValueSerializer(serializers.ModelSerializer):
-    sensordata = NestedSensorDataSerializer()
+class VerboseSensorDataSerializer(serializers.ModelSerializer):
+    sensordatavalues = NestedSensorDataValueSerializer(many=True)
 
     class Meta:
-        model = SensorDataValue
-        fields = ('value', 'value_type', 'sensordata')
+        model = SensorData
+        fields = ('id', 'sampling_rate', 'timestamp', 'sensordatavalues')
+        read_only = ('location')
