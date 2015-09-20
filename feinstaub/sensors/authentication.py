@@ -39,6 +39,8 @@ class OwnerPermission(permissions.BasePermission):
     """Checks if authenticated user is owner of the node"""
 
     def has_object_permission(self, request, view, obj):
+        if hasattr(obj, 'sensordata'):
+            obj = obj.sensordata
         if hasattr(obj, 'sensor'):
             obj = obj.sensor
         if hasattr(obj, 'node'):
