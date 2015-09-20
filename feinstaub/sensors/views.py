@@ -12,8 +12,8 @@ from django.http import HttpResponse
 from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 
-from .authentication import IsSensorValid, NodeOwnerPermission, NodeUidAuthentication
-from .serializers import SensorDataSerializer, NodeSerializer
+from .authentication import IsSensorValid, OwnerPermission, NodeUidAuthentication
+from .serializers import SensorDataSerializer, NodeSerializer, SensorSerializer
 
 from .models import (
     Node,
@@ -25,9 +25,9 @@ from .models import (
 )
 
 
-class SensorDataView(mixins.RetrieveModelMixin,
-                     mixins.CreateModelMixin,
-                     viewsets.GenericViewSet):
+class PostSensorDataView(mixins.RetrieveModelMixin,
+                         mixins.CreateModelMixin,
+                         viewsets.GenericViewSet):
     """ This endpoint is to POST data from the sensor to the api.
     """
     authentication_classes = (NodeUidAuthentication,)
@@ -36,12 +36,30 @@ class SensorDataView(mixins.RetrieveModelMixin,
     queryset = SensorData.objects.all()
 
 
+class SensorView(mixins.ListModelMixin,
+                 mixins.RetrieveModelMixin,
+                 viewsets.GenericViewSet):
+    """ This endpoint is to download sensor data from the api.
+    """
+    permission_classes = (OwnerPermission,)
+    serializer_class = SensorSerializer
+    queryset = Sensor.objects.all()
+    paginate_by = 10
+    paginate_by_param = 'page_size'
+    max_paginate_by = 100
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated():
+            return Sensor.objects.filter(node__owner=self.request.user)
+        return Sensor.objects.none()
+
+
 class NodeView(mixins.ListModelMixin,
                mixins.RetrieveModelMixin,
                viewsets.GenericViewSet):
     """ Show all nodes belonging to authenticated user
     """
-    permission_classes = (NodeOwnerPermission,)
+    permission_classes = (OwnerPermission,)
     serializer_class = NodeSerializer
     queryset = Node.objects.all()
 

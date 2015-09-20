@@ -111,3 +111,11 @@ class NodeSerializer(serializers.ModelSerializer):
     def get_last_data_push(self, obj):
         x = obj.sensors.order_by('-sensordatas__timestamp')[:1].values_list('sensordatas__timestamp', flat=True)
         return x[0] if x else None
+
+
+class SensorSerializer(serializers.ModelSerializer):
+    sensor_type = NestedSensorTypeSerializer()
+
+    class Meta:
+        model = Sensor
+        fields = ('id', 'description', 'pin', 'sensor_type')
