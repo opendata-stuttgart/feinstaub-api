@@ -2,7 +2,7 @@
 from rest_framework.test import APIRequestFactory
 import pytest
 
-from sensors.views import SensorDataView
+from sensors.views import PostSensorDataView
 
 
 @pytest.mark.django_db
@@ -20,7 +20,7 @@ class TestAuthenticator:
 
     def test_sensoruid_authenticator(self, sensor, authenticator_fixture):
         factory = APIRequestFactory()
-        view = SensorDataView
+        view = PostSensorDataView
         url = '/v1/push-sensor-data/'
         request = factory.post(url, {'sensordatavalues': [], },
                                format='json')

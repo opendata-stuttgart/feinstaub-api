@@ -3,7 +3,7 @@ from rest_framework.test import APIRequestFactory
 import pytest
 import pytz
 
-from sensors.views import SensorDataView
+from sensors.views import PostSensorDataView
 from sensors.models import SensorData
 
 
@@ -21,7 +21,7 @@ class TestSensorDataPushFull:
 
     def test_full_data_push(self, sensor, data_fixture):
         factory = APIRequestFactory()
-        view = SensorDataView
+        view = PostSensorDataView
         url = '/v1/push-sensor-data/'
         request = factory.post(url, data_fixture,
                                format='json')
