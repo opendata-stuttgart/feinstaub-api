@@ -8,7 +8,6 @@ web:
    - './manage.py'
   links:
    - db
-   - redis
   volumes:
    - .:/opt/code
   ports:
@@ -17,9 +16,5 @@ data:
   image: aexea/aexea-base
   volumes:
     - /home/uid1000
-redis:
-  image: redis
-  ports:
-    - "6379:6379"
 db:
   image: postgres:9.4
