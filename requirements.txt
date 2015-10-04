@@ -2,6 +2,7 @@ Django<1.9
 Pillow
 bpython
 django-extensions
+django-filter
 django-flat-theme
 django-redis
 djangorestframework==3.1.1
