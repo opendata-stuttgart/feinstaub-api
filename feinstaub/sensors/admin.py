@@ -48,7 +48,7 @@ class SensorDataValueAdmin(admin.ModelAdmin):
 @admin.register(SensorLocation)
 class SensorLocationAdmin(admin.ModelAdmin):
     search_fields = ['location', ]
-    list_display = ['location', 'indoor', 'owner', 'description',
+    list_display = ['location', 'latitude', 'longitude', 'indoor', 'owner', 'description',
                     'timestamp', 'created', 'modified']
     list_filter = ['indoor', 'owner']
 
