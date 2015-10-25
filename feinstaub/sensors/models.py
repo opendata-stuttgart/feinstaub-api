@@ -107,7 +107,8 @@ class SensorDataValue(TimeStampedModel):
 
 class SensorLocation(TimeStampedModel):
     location = models.TextField(null=True, blank=True)
-    # FIXME: geofield for lat/lon
+    latitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
     indoor = models.BooleanField(default=False)
     owner = models.ForeignKey(User, null=True, blank=True,
                               help_text="If not set, location is public.")
