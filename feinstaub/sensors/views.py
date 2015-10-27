@@ -76,7 +76,7 @@ class SensorDataView(mixins.ListModelMixin,
     def get_queryset(self):
         if self.request.user.is_authenticated():
             return SensorData.objects.filter(sensor__node__owner=self.request.user)
-        return Sensor.objects.none()
+        return SensorData.objects.none()
 
 
 class NodeView(mixins.ListModelMixin,
