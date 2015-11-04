@@ -35,14 +35,16 @@ class SensorDataSerializer(serializers.ModelSerializer):
         # use sensor from authenticator
         successful_authenticator = self.context['request'].successful_authenticator
         if successful_authenticator:
-            node, x = successful_authenticator.authenticate(self.context['request'])
+            node, pin = successful_authenticator.authenticate(self.context['request'])
             if node.sensors.count() == 1:
                 validated_data['sensor'] = node.sensors.first()
             else:
-                # FIXME get pin somehow. think about that!!
-                pass
+                validated_data['sensor'] = node.sensors.filter(pin=pin).first()
         else:
             raise exceptions.NotAuthenticated
+
+        if not validated_data['sensor']:
+            raise exceptions.ValidationError('sensor could not be selected.')
 
         sensordatavalues = validated_data.pop('sensordatavalues')
 

@@ -26,13 +26,14 @@ class NodeUidAuthentication(authentication.BaseAuthentication):
             node_uid = request.META.get('HTTP_SENSOR')
             if not node_uid:
                 return None
+        node_pin = request.META.get('HTTP_PIN', '-')
 
         try:
             node = Node.objects.get(uid=node_uid)
         except Node.DoesNotExist:
             raise exceptions.AuthenticationFailed('Node not found in database.')
 
-        return (node, None)
+        return (node, node_pin)
 
 
 class OwnerPermission(permissions.BasePermission):
