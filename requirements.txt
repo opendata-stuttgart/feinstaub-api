@@ -5,7 +5,7 @@ django-extensions
 django-filter
 django-flat-theme
 django-redis
-djangorestframework==3.1.1
+djangorestframework==3.3.1
 gunicorn
 ipython
 opbeat
