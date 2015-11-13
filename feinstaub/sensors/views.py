@@ -1,6 +1,6 @@
 import django_filters
 from django.contrib.auth.models import User
-from rest_framework import mixins, viewsets, filters
+from rest_framework import mixins, viewsets, filters, pagination
 from rest_framework.response import Response
 
 from .authentication import IsSensorValid, OwnerPermission, NodeUidAuthentication
@@ -59,6 +59,12 @@ class SensorFilter(django_filters.FilterSet):
         fields = ['timestamp_newer', 'sensor']
 
 
+class StandardResultsSetPagination(pagination.PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
 class SensorDataView(mixins.ListModelMixin,
                      mixins.RetrieveModelMixin,
                      viewsets.GenericViewSet):
@@ -67,9 +73,7 @@ class SensorDataView(mixins.ListModelMixin,
     permission_classes = (OwnerPermission,)
     serializer_class = VerboseSensorDataSerializer
     queryset = SensorData.objects.all()
-    paginate_by = 10
-    paginate_by_param = 'page_size'
-    max_paginate_by = 100
+    pagination_class = StandardResultsSetPagination
     filter_backends = (filters.DjangoFilterBackend, )
     filter_class = SensorFilter
 
