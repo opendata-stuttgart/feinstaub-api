@@ -21,6 +21,12 @@ from .models import (
 )
 
 
+class StandardResultsSetPagination(pagination.PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
 class PostSensorDataView(mixins.RetrieveModelMixin,
                          mixins.CreateModelMixin,
                          viewsets.GenericViewSet):
@@ -40,9 +46,7 @@ class SensorView(mixins.ListModelMixin,
     permission_classes = (OwnerPermission,)
     serializer_class = SensorSerializer
     queryset = Sensor.objects.all()
-    paginate_by = 10
-    paginate_by_param = 'page_size'
-    max_paginate_by = 100
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         if self.request.user.is_authenticated():
@@ -57,12 +61,6 @@ class SensorFilter(django_filters.FilterSet):
     class Meta:
         model = SensorData
         fields = ['timestamp_newer', 'sensor']
-
-
-class StandardResultsSetPagination(pagination.PageNumberPagination):
-    page_size = 10
-    page_size_query_param = 'page_size'
-    max_page_size = 100
 
 
 class SensorDataView(mixins.ListModelMixin,
