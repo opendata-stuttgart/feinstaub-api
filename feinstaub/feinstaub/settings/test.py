@@ -19,7 +19,6 @@ if os.environ.get('TEST_ON_PLATFORM', '').lower() == 'wercker':
             'TEST_NAME': os.environ.get('WERCKER_POSTGRESQL_DATABASE', 'test'),
             'USER': os.environ.get('WERCKER_POSTGRESQL_USERNAME', 'postgres'),
             'PASSWORD': os.environ.get('WERCKER_POSTGRESQL_PASSWORD', ''),
-            'HOST': os.environ.get('WERCKER_POSTGRESQL_HOST', '127.0.01'),
             'PORT': os.environ.get('WERCKER_POSTGRESQL_PORT', '5432'),
         }
     }
