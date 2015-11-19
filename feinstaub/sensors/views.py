@@ -50,6 +50,8 @@ class SensorView(mixins.ListModelMixin,
 
     def get_queryset(self):
         if self.request.user.is_authenticated():
+            if self.request.user.groups.filter(name="show_me_everything").exists():
+                return Sensor.objects.all()
             return Sensor.objects.filter(node__owner=self.request.user)
         return Sensor.objects.none()
 
@@ -77,6 +79,8 @@ class SensorDataView(mixins.ListModelMixin,
 
     def get_queryset(self):
         if self.request.user.is_authenticated():
+            if self.request.user.groups.filter(name="show_me_everything").exists():
+                return SensorData.objects.all()
             return SensorData.objects.filter(sensor__node__owner=self.request.user)
         return SensorData.objects.none()
 
@@ -92,6 +96,8 @@ class NodeView(mixins.ListModelMixin,
 
     def get_queryset(self):
         if self.request.user.is_authenticated():
+            if self.request.user.groups.filter(name="show_me_everything").exists():
+                return Node.objects.all()
             return Node.objects.filter(owner=self.request.user)
         return Node.objects.none()
 
