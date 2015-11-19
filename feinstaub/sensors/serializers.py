@@ -128,5 +128,4 @@ class VerboseSensorDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SensorData
-        fields = ('id', 'sampling_rate', 'timestamp', 'sensordatavalues')
-        read_only = ('location')
+        fields = ('id', 'sampling_rate', 'timestamp', 'sensordatavalues', 'location', 'sensor')
