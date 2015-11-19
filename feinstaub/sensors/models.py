@@ -36,6 +36,7 @@ class Sensor(TimeStampedModel):
                            help_text="differentiate the sensors on one node by giving pin used")
     sensor_type = models.ForeignKey(SensorType)
     description = models.TextField(null=True, blank=True)
+    public = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('node', 'pin')

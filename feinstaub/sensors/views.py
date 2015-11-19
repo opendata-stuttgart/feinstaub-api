@@ -82,7 +82,7 @@ class SensorDataView(mixins.ListModelMixin,
             if self.request.user.groups.filter(name="show_me_everything").exists():
                 return SensorData.objects.all()
             return SensorData.objects.filter(sensor__node__owner=self.request.user)
-        return SensorData.objects.none()
+        return SensorData.objects.filter(sensor__public=True)
 
 
 class NodeView(mixins.ListModelMixin,
