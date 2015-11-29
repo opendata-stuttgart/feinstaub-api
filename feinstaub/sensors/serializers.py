@@ -47,6 +47,8 @@ class SensorDataSerializer(serializers.ModelSerializer):
             raise exceptions.ValidationError('sensor could not be selected.')
 
         sensordatavalues = validated_data.pop('sensordatavalues')
+        if not len(sensordatavalues):
+            raise exceptions.ValidationError('sensordatavalues was empty. Nothing to save.')
 
         # set location based on current location of sensor
         validated_data['location'] = node.location
