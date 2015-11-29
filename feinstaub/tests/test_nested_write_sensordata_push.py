@@ -10,10 +10,10 @@ class TestSensorDataPush:
 
     @pytest.fixture(params=[
         # value, status_code, count
-        [[], 201, 0],
         [[{"value": 10, "value_type": "P1"}], 201, 1],
         [[{"value": 10, "value_type": "P1"}, {"value": 99, "value_type": "P2"}], 201, 2],
         ## failes:
+        [[], 400, 0],   # because list of sensordatavalues is empty
         ['INVALID', 400, 1],
         [['INVALID'], 400, 1],
         [[{'INVALID_KEY': 1}], 400, 1],
@@ -36,8 +36,9 @@ class TestSensorDataPush:
         view_function = view.as_view({'post': 'create'})
         response = view_function(request)
 
-        assert len(response.data.get('sensordatavalues')) ==\
-            sensordatavalue_fixture.get('count')
+        if isinstance(response.data, dict):
+            assert len(response.data.get('sensordatavalues')) ==\
+                sensordatavalue_fixture.get('count')
 
         assert response.status_code ==\
             sensordatavalue_fixture.get('status_code')

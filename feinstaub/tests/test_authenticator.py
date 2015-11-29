@@ -22,7 +22,7 @@ class TestAuthenticator:
         factory = APIRequestFactory()
         view = PostSensorDataView
         url = '/v1/push-sensor-data/'
-        request = factory.post(url, {'sensordatavalues': [], },
+        request = factory.post(url, {'sensordatavalues': [{"value": 10, "value_type": "P1"}], },
                                format='json')
 
         # set HTTP header the same way the client would do
