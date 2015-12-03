@@ -33,6 +33,8 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     # Local apps
     'sensors',
+    # django-dbbackup
+    'dbbackup',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -120,3 +122,7 @@ TEMPLATES = [
         },
     },
 ]
+
+
+DBBACKUP_STORAGE = 'dbbackup.storage.filesystem_storage'
+DBBACKUP_STORAGE_OPTIONS = {'location': '/opt/code/backup/'}
