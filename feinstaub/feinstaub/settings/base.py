@@ -32,6 +32,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     # Local apps
+    'main',
     'sensors',
     # django-dbbackup
     'dbbackup',
