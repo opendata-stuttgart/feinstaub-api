@@ -1,5 +1,7 @@
 import django_filters
 from django.contrib.auth.models import User
+from django.db.models import Q
+
 from rest_framework import mixins, viewsets, filters, pagination
 from rest_framework.response import Response
 
@@ -81,7 +83,8 @@ class SensorDataView(mixins.ListModelMixin,
         if self.request.user.is_authenticated():
             if self.request.user.groups.filter(name="show_me_everything").exists():
                 return SensorData.objects.all()
-            return SensorData.objects.filter(sensor__node__owner=self.request.user)
+            return SensorData.objects.filter(Q(sensor__node__owner=self.request.user) |
+                                             Q(sensor__public=True))
         return SensorData.objects.filter(sensor__public=True)
 
 
