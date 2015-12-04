@@ -51,6 +51,8 @@ class SensorData(TimeStampedModel):
                                         help_text="in milliseconds")
     timestamp = models.DateTimeField(default=now)
     location = models.ForeignKey("SensorLocation", blank=True)
+    software_version = models.CharField(max_length=100, default="",
+                                        help_text="sensor software version")
 
     def __str__(self):
         return "{sensor} [{value_count}]".format(
