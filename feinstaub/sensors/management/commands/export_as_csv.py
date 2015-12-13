@@ -45,13 +45,19 @@ class Command(BaseCommand):
                     continue
 
                 fn = "{date}_{stype}_sensor_{sid}.csv".format(sid=sensor.id, stype=sensor.sensor_type.name.lower(), date=str(dt))
-                # if file exists; overwrite. always
+
+                qs = SensorData.objects.filter(sensor=sensor).filter(timestamp__date=dt).order_by("timestamp")
+                if not qs.count():
+                    continue
+
                 print(fn)
+
+                # if file exists; overwrite. always
                 with open(os.path.join(folder, fn), "w") as fp:
                     fp.write("sensor_id;sensor_type;location;timestamp;")
                     # FIXME: generate from SENSOR_TYPE_CHOICES
                     fp.write("P1;durP1;ratioP1;P2;durP2;ratioP2\n")
-                    for sd in SensorData.objects.filter(sensor=sensor).filter(timestamp__date=dt).order_by("timestamp"):
+                    for sd in qs:
                         s = ';'.join([str(sensor.id), sensor.sensor_type.name, str(sd.location.id), str(sd.timestamp.date())])
                         fp.write(s)
                         fp.write(';')
