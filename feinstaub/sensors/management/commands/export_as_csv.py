@@ -54,6 +54,7 @@ class Command(BaseCommand):
                     for sd in SensorData.objects.filter(sensor=sensor).filter(timestamp__date=dt).order_by("timestamp"):
                         s = ';'.join([str(sensor.id), sensor.sensor_type.name, str(sd.location.id), str(sd.timestamp.date())])
                         fp.write(s)
+                        fp.write(';')
                         fp.write('{};'.format(sd.sensordatavalues.get(value_type="P1").value))
                         fp.write('{};'.format(sd.sensordatavalues.get(value_type="durP1").value))
                         fp.write('{};'.format(sd.sensordatavalues.get(value_type="ratioP1").value))
