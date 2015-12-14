@@ -53,9 +53,10 @@ class Command(BaseCommand):
                     continue
 
                 print(fn)
+                os.makedirs(os.path.join(folder, str(dt)), exist_ok=True)
 
                 # if file exists; overwrite. always
-                with open(os.path.join(folder, fn), "w") as fp:
+                with open(os.path.join(folder, str(dt), fn), "w") as fp:
                     fp.write("sensor_id;sensor_type;location;timestamp;")
                     # FIXME: generate from SENSOR_TYPE_CHOICES
                     fp.write("P1;durP1;ratioP1;P2;durP2;ratioP2\n")
