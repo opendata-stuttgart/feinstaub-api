@@ -47,7 +47,8 @@ class Command(BaseCommand):
                 fn = "{date}_{stype}_sensor_{sid}.csv".format(sid=sensor.id, stype=sensor.sensor_type.name.lower(), date=str(dt))
 
                 # location 11 is the dummy location. remove the datasets.
-                qs = SensorData.objects.filter(sensor=sensor).exclude(location_id=11).filter(timestamp__date=dt).order_by("timestamp")
+                # remove all indoor locations
+                qs = SensorData.objects.filter(sensor=sensor).exclude(location_id=11).exclude(location__indoor=True).filter(timestamp__date=dt).order_by("timestamp")
                 if not qs.count():
                     continue
 
