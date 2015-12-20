@@ -26,7 +26,7 @@ class SensorDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SensorData
-        fields = ('sensor', 'sampling_rate', 'timestamp', 'sensordatavalues')
+        fields = ('sensor', 'sampling_rate', 'timestamp', 'sensordatavalues', 'software_version')
         read_only = ('location')
 
     def create(self, validated_data):
@@ -130,4 +130,4 @@ class VerboseSensorDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SensorData
-        fields = ('id', 'sampling_rate', 'timestamp', 'sensordatavalues', 'location', 'sensor')
+        fields = ('id', 'sampling_rate', 'timestamp', 'sensordatavalues', 'location', 'sensor', 'software_version')
