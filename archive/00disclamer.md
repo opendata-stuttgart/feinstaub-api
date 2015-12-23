@@ -10,6 +10,5 @@ Please report problems in our opendata-stuttgart issuetracker: https://github.co
 
 ## Future improvements
 
-- list of locations (with degraded precision for anonymity)
 - description of position of sensor on location
 - image of sensor at location
