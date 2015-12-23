@@ -57,11 +57,22 @@ class Command(BaseCommand):
 
                 # if file exists; overwrite. always
                 with open(os.path.join(folder, str(dt), fn), "w") as fp:
-                    fp.write("sensor_id;sensor_type;location;timestamp;")
+                    fp.write("sensor_id;sensor_type;location;lat;lon;timestamp;")
                     # FIXME: generate from SENSOR_TYPE_CHOICES
                     fp.write("P1;durP1;ratioP1;P2;durP2;ratioP2\n")
                     for sd in qs:
-                        s = ';'.join([str(sensor.id), sensor.sensor_type.name, str(sd.location.id), str(sd.timestamp.date())])
+                        longitude = ''
+                        if sd.location.longitude:
+                            longitude = "{:.3f}".format(sd.location.longitude)
+                        latitude = ''
+                        if sd.location.latitude:
+                            latitude = "{:.3f}".format(sd.location.latitude)
+                        s = ';'.join([str(sensor.id),
+                                      sensor.sensor_type.name,
+                                      str(sd.location.id),
+                                      latitude,
+                                      longitude,
+                                      sd.timestamp.isoformat()])
                         fp.write(s)
                         fp.write(';')
                         fp.write('{};'.format(sd.sensordatavalues.get(value_type="P1").value))
