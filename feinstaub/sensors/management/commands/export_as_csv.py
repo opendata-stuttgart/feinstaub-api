@@ -17,7 +17,7 @@ class Command(BaseCommand):
         parser.add_argument('--end_date')
 
     def handle(self, *args, **options):
-        from sensors.models import Sensor, SensorData
+        from sensors.models import Sensor, SensorData, SensorDataValue
 
         # default yesterday
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
@@ -73,9 +73,14 @@ class Command(BaseCommand):
                                       latitude,
                                       longitude,
                                       sd.timestamp.isoformat()])
+                        try:
+                            p1 = sd.sensordatavalues.get(value_type="P1").value
+                        except SensorDataValue.DoesNotExist:
+                            # FIXME: log defect datasets!
+                            continue
                         fp.write(s)
                         fp.write(';')
-                        fp.write('{};'.format(sd.sensordatavalues.get(value_type="P1").value))
+                        fp.write('{};'.format(p1))
                         fp.write('{};'.format(sd.sensordatavalues.get(value_type="durP1").value))
                         fp.write('{};'.format(sd.sensordatavalues.get(value_type="ratioP1").value))
                         fp.write('{};'.format(sd.sensordatavalues.get(value_type="P2").value))
