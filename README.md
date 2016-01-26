@@ -4,6 +4,9 @@ Api to save data from sensors (especially particulates sensors).
 
 [![wercker status](https://app.wercker.com/status/2f64157addaf81977bf02c9b861cc500/m "wercker status")](https://app.wercker.com/project/bykey/2f64157addaf81977bf02c9b861cc500)
 
+## Note
+
+Daily CSV dumps: http://archive.luftdaten.info/
 
 ## Installation:
 
