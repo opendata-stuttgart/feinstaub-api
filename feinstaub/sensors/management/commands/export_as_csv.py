@@ -49,7 +49,7 @@ class Command(BaseCommand):
                 # location 11 is the dummy location. remove the datasets.
                 # remove all indoor locations
                 qs = SensorData.objects.filter(sensor=sensor).exclude(location_id=11).exclude(location__indoor=True).filter(timestamp__date=dt).order_by("timestamp")
-                if not qs.count():
+                if not qs.exists():
                     continue
 
                 print(fn)
