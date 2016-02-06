@@ -16,6 +16,8 @@ def calculate_datatable():
 
 def calculate_datatable_location(location):
     # calculate for each location per day a table with all sensor values
+    table = sensordata_to_dataframe(location)
+
     data = {
         'location': {
             'location': location.location,
@@ -23,13 +25,15 @@ def calculate_datatable_location(location):
             'owner': location.owner.username,
             'description': location.description,
         },
+        'table_head': table.columns,
+        'table': table.values,
     }
-    table = sensordata_to_dataframe(location)
-    data['table_head'] = table.columns
-    data['table'] = table.values
-    cache.set("location_cache_{}".format(location.pk),
-              data,
-              timeout=None)
+
+    cache.set(
+        'location_cache_{}'.format(location.pk),
+        data,
+        timeout=None,
+    )
 
 
 def sensordata_to_dataframe(location):
