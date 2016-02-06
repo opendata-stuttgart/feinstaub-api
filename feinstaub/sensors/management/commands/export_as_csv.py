@@ -39,12 +39,6 @@ class Command(BaseCommand):
             if not sensor.sensor_type.name.lower() == "ppd42ns":
                 continue
 
-            fn = "{date}_{stype}_sensor_{sid}.csv".format(
-                sid=sensor.id,
-                stype=sensor.sensor_type.name.lower(),
-                date=str(dt),
-            )
-
             # location 11 is the dummy location. remove the datasets.
             # remove all indoor locations
             qs = SensorData.objects \
@@ -56,6 +50,11 @@ class Command(BaseCommand):
             if not qs.exists():
                 continue
 
+            fn = '{date}_{stype}_sensor_{sid}.csv'.format(
+                date=str(dt),
+                stype=sensor.sensor_type.name.lower(),
+                sid=sensor.id,
+            )
             print(fn)
             os.makedirs(os.path.join(folder, str(dt)), exist_ok=True)
 
