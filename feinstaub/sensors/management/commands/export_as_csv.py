@@ -40,15 +40,25 @@ class Command(BaseCommand):
             folder = "/opt/code/archive"
             for sensor in Sensor.objects.all():
                 # first only for ppd42ns.
-                # because we need a list of fields for all other sensors -> SENSOR_TYPE_CHOICES needs to become more sophisticated
+                # because we need a list of fields for all other sensors
+                # -> SENSOR_TYPE_CHOICES needs to become more sophisticated
                 if not sensor.sensor_type.name.lower() == "ppd42ns":
                     continue
 
-                fn = "{date}_{stype}_sensor_{sid}.csv".format(sid=sensor.id, stype=sensor.sensor_type.name.lower(), date=str(dt))
+                fn = "{date}_{stype}_sensor_{sid}.csv".format(
+                    sid=sensor.id,
+                    stype=sensor.sensor_type.name.lower(),
+                    date=str(dt),
+                )
 
                 # location 11 is the dummy location. remove the datasets.
                 # remove all indoor locations
-                qs = SensorData.objects.filter(sensor=sensor).exclude(location_id=11).exclude(location__indoor=True).filter(timestamp__date=dt).order_by("timestamp")
+                qs = SensorData.objects \
+                    .filter(sensor=sensor) \
+                    .exclude(location_id=11) \
+                    .exclude(location__indoor=True) \
+                    .filter(timestamp__date=dt) \
+                    .order_by("timestamp")
                 if not qs.exists():
                     continue
 
