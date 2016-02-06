@@ -53,24 +53,33 @@ def sensordata_to_dataframe(location):
 
 def export_to_csv():
     import csv
+
+    fieldnames = ['timestamp', 'type', 'indoor',
+                  'location_id', 'sampling_rate']
+    fieldnames += [i for i, j in SENSOR_TYPE_CHOICES]
+
     with open('/tmp/data.csv', 'w', newline='') as csvfile:
-        fieldnames = ['timestamp', 'type', 'indoor',
-                      'location_id', 'sampling_rate']
-        fieldnames += [i for i, j in SENSOR_TYPE_CHOICES]
         csvwriter = csv.DictWriter(csvfile, fieldnames=fieldnames)
         csvwriter.writeheader()
-        for element in SensorData.objects\
-                                 .filter(sensor__sensor_type__name__in=[
-                                     'dsm501a',
-                                     'GP2Y1010AU0F',
-                                     'PPD42NS'
-                                 ]):
-            d = {}
-            d['timestamp'] = str(element.timestamp)
-            d['type'] = element.sensor.sensor_type.name
-            d['indoor'] = element.location.indoor
-            d['location_id'] = element.location.pk
-            d['sampling_rate'] = element.sampling_rate
-            for data in element.sensordatavalues.all():
-                d[data.value_type] = data.value
+        elements = SensorData.objects \
+            .filter(sensor__sensor_type__name__in=[
+                'dsm501a',
+                'GP2Y1010AU0F',
+                'PPD42NS',
+            ])
+
+        for element in elements:
+            d = {
+                'timestamp': str(element.timestamp),
+                'type': element.sensor.sensor_type.name,
+                'indoor': element.location.indoor,
+                'location_id': element.location.pk,
+                'sampling_rate': element.sampling_rate,
+            }
+
+            d.update({
+                data.value_type: data.value
+                for data in element.sensordatavalues.all()
+            })
+
             csvwriter.writerow(d)
