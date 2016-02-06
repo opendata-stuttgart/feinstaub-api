@@ -28,11 +28,9 @@ class Command(BaseCommand):
             print("end_date is before start_date")
             return
 
-        dt = start_date
-
         folder = "/opt/code/archive"
 
-        while dt <= end_date:
+        for dt in self._dates(start_date, end_date):
             for sensor in Sensor.objects.all():
                 # first only for ppd42ns.
                 # because we need a list of fields for all other sensors
@@ -95,4 +93,9 @@ class Command(BaseCommand):
                         fp.write('{}'.format(sd.sensordatavalues.get(value_type="ratioP2").value))
                         fp.write("\n")
 
-            dt += datetime.timedelta(days=1)
+    @staticmethod
+    def _dates(start, end):
+        current = start
+        while current <= end:
+            yield current
+            current += datetime.timedelta(days=1)
