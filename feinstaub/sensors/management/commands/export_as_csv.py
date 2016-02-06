@@ -66,6 +66,12 @@ class Command(BaseCommand):
                     # FIXME: generate from SENSOR_TYPE_CHOICES
                     fp.write("P1;durP1;ratioP1;P2;durP2;ratioP2\n")
                     for sd in qs:
+                        try:
+                            p1 = sd.sensordatavalues.get(value_type="P1").value
+                        except SensorDataValue.DoesNotExist:
+                            # FIXME: log defect datasets!
+                            continue
+
                         longitude = ''
                         if sd.location.longitude:
                             longitude = "{:.3f}".format(sd.location.longitude)
@@ -78,11 +84,7 @@ class Command(BaseCommand):
                                       latitude,
                                       longitude,
                                       sd.timestamp.isoformat()])
-                        try:
-                            p1 = sd.sensordatavalues.get(value_type="P1").value
-                        except SensorDataValue.DoesNotExist:
-                            # FIXME: log defect datasets!
-                            continue
+
                         fp.write(s)
                         fp.write(';')
                         fp.write('{};'.format(p1))
