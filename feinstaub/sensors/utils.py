@@ -33,22 +33,24 @@ def calculate_datatable_location(location):
 
 
 def sensordata_to_dataframe(location):
-    data_list = []
-    for sensordata in SensorData.objects.filter(location=location):
-        for datavalue in SensorDataValue.objects.filter(sensordata=sensordata):
-            new_row = {
-                'timestamp': [str(sensordata.timestamp)],
-                'sensor': [sensordata.id],
-                'value_type': [datavalue.value_type],
-                'value': [datavalue.value],
-                'sensor__owner': [sensordata.sensor.owner.username],
-                'sampling_rate': [sensordata.sampling_rate],
-            }
-            data_list.append(new_row)
-    df = pd.DataFrame(data_list,
-                      columns=['timestamp', 'sensor', 'value_type',
-                               'value', 'sensor__owner', 'sampling_rate'])
-    return df
+    data_list = [
+        {
+            'timestamp': [str(sensordata.timestamp)],
+            'sensor': [sensordata.id],
+            'value_type': [datavalue.value_type],
+            'value': [datavalue.value],
+            'sensor__owner': [sensordata.sensor.owner.username],
+            'sampling_rate': [sensordata.sampling_rate],
+        }
+        for sensordata in SensorData.objects.filter(location=location)
+        for datavalue in SensorDataValue.objects.filter(sensordata=sensordata)
+    ]
+
+    return pd.DataFrame(
+        data_list,
+        columns=['timestamp', 'sensor', 'value_type', 'value', 'sensor__owner',
+                 'sampling_rate'],
+    )
 
 
 def export_to_csv():
