@@ -30,9 +30,9 @@ class Command(BaseCommand):
 
         dt = start_date
 
-        while dt <= end_date:
+        folder = "/opt/code/archive"
 
-            folder = "/opt/code/archive"
+        while dt <= end_date:
             for sensor in Sensor.objects.all():
                 # first only for ppd42ns.
                 # because we need a list of fields for all other sensors
