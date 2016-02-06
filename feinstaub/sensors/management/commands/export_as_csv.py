@@ -4,8 +4,8 @@ from django.core.management import BaseCommand
 import datetime
 
 
-def str2date(str):
-    return datetime.datetime.strptime(str, '%Y-%m-%d').date()
+def str2date(str, default):
+    return datetime.datetime.strptime(str, '%Y-%m-%d').date() if str else default
 
 
 class Command(BaseCommand):
@@ -21,12 +21,8 @@ class Command(BaseCommand):
 
         # default yesterday
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
-
-        start_date_raw = options.get('start_date')
-        start_date = str2date(start_date_raw) if start_date_raw else yesterday
-
-        end_date_raw = options.get('end_date')
-        end_date = str2date(end_date_raw) if end_date_raw else yesterday
+        start_date = str2date(options.get('start_date'), yesterday)
+        end_date = str2date(options.get('end_date'), yesterday)
 
         if start_date > end_date:
             print("end_date is before start_date")
