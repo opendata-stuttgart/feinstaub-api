@@ -22,20 +22,19 @@ class Command(BaseCommand):
         # default yesterday
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
 
-        start_date = options.get('start_date')
-        if not start_date:
-            start_date = str(yesterday)
-        end_date = options.get('end_date')
-        if not end_date:
-            end_date = str(yesterday)
+        start_date_raw = options.get('start_date')
+        start_date = str2date(start_date_raw) if start_date_raw else yesterday
+
+        end_date_raw = options.get('end_date')
+        end_date = str2date(end_date_raw) if end_date_raw else yesterday
 
         if start_date > end_date:
             print("end_date is before start_date")
             return
 
-        dt = str2date(start_date)
+        dt = start_date
 
-        while dt <= str2date(end_date):
+        while dt <= end_date:
 
             folder = "/opt/code/archive"
             for sensor in Sensor.objects.all():
