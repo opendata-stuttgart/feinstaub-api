@@ -19,7 +19,7 @@ class Command(BaseCommand):
         parser.add_argument('--end_date')
 
     def handle(self, *args, **options):
-        from sensors.models import Sensor, SensorData, SensorDataValue
+        from sensors.models import Sensor, SensorData
 
         # default yesterday
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
@@ -64,10 +64,13 @@ class Command(BaseCommand):
                 # FIXME: generate from SENSOR_TYPE_CHOICES
                 fp.write("P1;durP1;ratioP1;P2;durP2;ratioP2\n")
                 for sd in qs:
-                    try:
-                        p1 = sd.sensordatavalues.get(value_type="P1").value
-                    except SensorDataValue.DoesNotExist:
-                        # FIXME: log defect datasets!
+                    sensordata = {
+                        data['value_type']: data['value']
+                        for data in sd.sensordatavalues.values('value_type', 'value')
+                    }
+                    if not sensordata:
+                        continue
+                    if 'P1' not in sensordata:
                         continue
 
                     longitude = ''
@@ -85,12 +88,12 @@ class Command(BaseCommand):
 
                     fp.write(s)
                     fp.write(';')
-                    fp.write('{};'.format(p1))
-                    fp.write('{};'.format(sd.sensordatavalues.get(value_type="durP1").value))
-                    fp.write('{};'.format(sd.sensordatavalues.get(value_type="ratioP1").value))
-                    fp.write('{};'.format(sd.sensordatavalues.get(value_type="P2").value))
-                    fp.write('{};'.format(sd.sensordatavalues.get(value_type="durP2").value))
-                    fp.write('{}'.format(sd.sensordatavalues.get(value_type="ratioP2").value))
+                    fp.write('{};'.format(sensordata['P1']))
+                    fp.write('{};'.format(sensordata['durP1']))
+                    fp.write('{};'.format(sensordata['ratioP1']))
+                    fp.write('{};'.format(sensordata['P2']))
+                    fp.write('{};'.format(sensordata['durP2']))
+                    fp.write('{}'.format(sensordata['ratioP2']))
                     fp.write("\n")
 
     @staticmethod
