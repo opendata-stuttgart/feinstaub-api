@@ -100,6 +100,9 @@ class SensorDataValue(TimeStampedModel):
     value_type = models.CharField(max_length=100, choices=SENSOR_TYPE_CHOICES,
                                   db_index=True)
 
+    class Meta:
+        unique_together = (('sensordata', 'value_type', ), )
+
     def __str__(self):
         return "{sensordata}: {value} [{value_type}]".format(
             sensordata=self.sensordata,
