@@ -67,6 +67,9 @@ SENSOR_TYPE_CHOICES = (
     ('durP2', 'duration 2.5µm'),
     ('ratioP1', 'ratio 1µm in percent'),
     ('ratioP2', 'ratio 2.5µm in percent'),
+    ('samples', 'samples'),
+    ('min_micro', 'min_micro'),
+    ('max_micro', 'max_micro'),
     # sht10-sht15; dht11, dht22; bmp180
     ('temperature', 'Temperature'),
     # sht10-sht15; dht11, dht22
