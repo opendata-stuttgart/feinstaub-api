@@ -7,6 +7,7 @@ from .views import (
     SensorDataView,
     SensorView,
     StatisticsView,
+    NowView,
 )
 from main.views import UsersView
 
@@ -17,6 +18,7 @@ router.register(r'sensor', SensorView)
 router.register(r'data', SensorDataView)
 router.register(r'statistics', StatisticsView, base_name='statistics')
 router.register(r'user', UsersView)
+router.register(r'now', NowView)
 
 
 urlpatterns = patterns(

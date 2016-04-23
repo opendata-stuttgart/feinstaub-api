@@ -131,3 +131,33 @@ class VerboseSensorDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = SensorData
         fields = ('id', 'sampling_rate', 'timestamp', 'sensordatavalues', 'location', 'sensor', 'software_version')
+
+
+# ##################################################
+
+
+class NowSensorSerializer(serializers.ModelSerializer):
+    sensor_type = NestedSensorTypeSerializer()
+
+    class Meta:
+        model = Sensor
+        fields = ('id', 'pin', 'sensor_type')
+
+
+class NowSensorLocationSerializer(serializers.ModelSerializer):
+    latitude = serializers.DecimalField(max_digits=6, decimal_places=3)
+    longitude = serializers.DecimalField(max_digits=6, decimal_places=3)
+
+    class Meta:
+        model = SensorLocation
+        fields = ('id', 'latitude', 'longitude')
+
+
+class NowSerializer(serializers.ModelSerializer):
+    location = NowSensorLocationSerializer()
+    sensor = NowSensorSerializer()
+    sensordatavalues = NestedSensorDataValueSerializer(many=True)
+
+    class Meta:
+        model = SensorData
+        fields = ('id', 'sampling_rate', 'timestamp', 'sensordatavalues', 'location', 'sensor')

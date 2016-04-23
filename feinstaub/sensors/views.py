@@ -1,6 +1,8 @@
+import datetime
 import django_filters
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.utils import timezone
 
 from rest_framework import mixins, viewsets, filters, pagination
 from rest_framework.response import Response
@@ -11,6 +13,7 @@ from .serializers import (
     NodeSerializer,
     SensorSerializer,
     VerboseSensorDataSerializer,
+    NowSerializer,
 )
 
 from .models import (
@@ -103,6 +106,20 @@ class NodeView(mixins.ListModelMixin,
                 return Node.objects.all()
             return Node.objects.filter(owner=self.request.user)
         return Node.objects.none()
+
+
+class NowView(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """ Show all sensors active in the last 5 minutes with newest value
+    """
+    permission_classes = []
+    serializer_class = NowSerializer
+    queryset = SensorData.objects.none()
+
+    def get_queryset(self):
+#        now = timezone.now()
+        now = datetime.datetime(2016, 1, 1, 1, 1)
+        startdate = now - datetime.timedelta(minutes=5)
+        return SensorData.objects.filter(modified__range=[startdate, now])
 
 
 class StatisticsView(viewsets.ViewSet):
