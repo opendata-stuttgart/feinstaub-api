@@ -116,8 +116,8 @@ class NowView(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = SensorData.objects.none()
 
     def get_queryset(self):
-#        now = timezone.now()
-        now = datetime.datetime(2016, 1, 1, 1, 1)
+        now = timezone.now()
+#        now = datetime.datetime(2016, 1, 1, 1, 1)
         startdate = now - datetime.timedelta(minutes=5)
         return SensorData.objects.filter(modified__range=[startdate, now])
 
