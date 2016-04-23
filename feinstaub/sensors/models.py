@@ -93,6 +93,16 @@ SENSOR_TYPE_CHOICES = (
     ('ratioP25', 'ratio 2.5µm in percent'),
     ##
     ('door_state', 'door state (open/closed)'),
+    ## gpssensor
+    ('lat', 'latitude'),
+    ('lon', 'longitude'),
+    ('height', 'height'),
+    ('hdop', 'horizontal dilusion of precision'),
+    ('timestamp', 'measured timestamp'),
+    ('age', 'measured age'),
+    ('satelites', 'number of satelites'),
+    ('speed', 'current speed over ground'),
+    ('azimuth', 'track angle'),
 )
 
 
