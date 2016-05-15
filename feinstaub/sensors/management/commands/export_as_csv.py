@@ -17,6 +17,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--start_date')
         parser.add_argument('--end_date')
+        parser.add_argument('--type')
 
     def handle(self, *args, **options):
         from sensors.models import Sensor, SensorData
@@ -25,6 +26,10 @@ class Command(BaseCommand):
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
         start_date = str2date(options.get('start_date'), yesterday)
         end_date = str2date(options.get('end_date'), yesterday)
+        if options.get('type'):
+            sensor_type = options.get('type').lower()
+        else:
+            sensor_type = "ppd42ns"
 
         if start_date > end_date:
             print("end_date is before start_date")
@@ -36,7 +41,7 @@ class Command(BaseCommand):
             # first only for ppd42ns.
             # because we need a list of fields for all other sensors
             # -> SENSOR_TYPE_CHOICES needs to become more sophisticated
-            if not sensor.sensor_type.name.lower() == "ppd42ns":
+            if not sensor.sensor_type.name.lower() == sensor_type:
                 continue
 
             # location 11 is the dummy location. remove the datasets.
@@ -59,10 +64,15 @@ class Command(BaseCommand):
             os.makedirs(os.path.join(folder, str(dt)), exist_ok=True)
 
             # if file exists; overwrite. always
+            key_list = []
+            if sensor_type == 'ppd42ns':
+                key_list = ['P1', 'durP1', 'ratioP1', 'P2', 'durP2', 'ratioP2']
+
             with open(os.path.join(folder, str(dt), fn), "w") as fp:
                 fp.write("sensor_id;sensor_type;location;lat;lon;timestamp;")
                 # FIXME: generate from SENSOR_TYPE_CHOICES
-                fp.write("P1;durP1;ratioP1;P2;durP2;ratioP2\n")
+                fp.write(';'.join(key_list))
+                fp.write("\n")
                 for sd in qs:
                     sensordata = {
                         data['value_type']: data['value']
@@ -88,12 +98,7 @@ class Command(BaseCommand):
 
                     fp.write(s)
                     fp.write(';')
-                    fp.write('{};'.format(sensordata['P1']))
-                    fp.write('{};'.format(sensordata['durP1']))
-                    fp.write('{};'.format(sensordata['ratioP1']))
-                    fp.write('{};'.format(sensordata['P2']))
-                    fp.write('{};'.format(sensordata['durP2']))
-                    fp.write('{}'.format(sensordata['ratioP2']))
+                    fp.write(';'.join([sensordata[i] for i in key_list]))
                     fp.write("\n")
 
     @staticmethod
