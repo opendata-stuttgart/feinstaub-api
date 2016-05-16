@@ -18,6 +18,7 @@ class Command(BaseCommand):
         parser.add_argument('--start_date')
         parser.add_argument('--end_date')
         parser.add_argument('--type')
+        parser.add_argument('--no_excludes', action="store_false")
 
     def handle(self, *args, **options):
         from sensors.models import Sensor, SensorData
@@ -48,10 +49,11 @@ class Command(BaseCommand):
             # remove all indoor locations
             qs = SensorData.objects \
                 .filter(sensor=sensor) \
-                .exclude(location_id=11) \
-                .exclude(location__indoor=True) \
                 .filter(timestamp__date=dt) \
                 .order_by("timestamp")
+            if options.get('no_excludes'):
+                qs = qs.exclude(location_id=11) \
+                       .exclude(location__indoor=True)
             if not qs.exists():
                 continue
 
@@ -67,10 +69,15 @@ class Command(BaseCommand):
             key_list = []
             if sensor_type == 'ppd42ns':
                 key_list = ['P1', 'durP1', 'ratioP1', 'P2', 'durP2', 'ratioP2']
+            elif sensor_type in ['sht11', 'dht11', 'dht22', 'sht10', 'sht15']:
+                key_list = ['temperature', 'humidity']
+            elif sensor_type == "bmp180":
+                key_list = ['pressure', 'altitude', 'pressure_sealevel', 'temperature']
+            elif sensor_type == "photoresistor":
+                key_list = ['brightness']
 
             with open(os.path.join(folder, str(dt), fn), "w") as fp:
                 fp.write("sensor_id;sensor_type;location;lat;lon;timestamp;")
-                # FIXME: generate from SENSOR_TYPE_CHOICES
                 fp.write(';'.join(key_list))
                 fp.write("\n")
                 for sd in qs:
@@ -80,7 +87,7 @@ class Command(BaseCommand):
                     }
                     if not sensordata:
                         continue
-                    if 'P1' not in sensordata:
+                    if sensor_type == 'ppd42ns' and 'P1' not in sensordata:
                         continue
 
                     longitude = ''
@@ -98,7 +105,7 @@ class Command(BaseCommand):
 
                     fp.write(s)
                     fp.write(';')
-                    fp.write(';'.join([sensordata[i] for i in key_list]))
+                    fp.write(';'.join([sensordata.get(i, '') for i in key_list]))
                     fp.write("\n")
 
     @staticmethod
