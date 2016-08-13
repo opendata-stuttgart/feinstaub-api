@@ -67,7 +67,7 @@ class Command(BaseCommand):
 
             # if file exists; overwrite. always
             key_list = []
-            if sensor_type == 'ppd42ns':
+            if sensor_type == 'ppd42ns' or sensor_type == 'sds011':
                 key_list = ['P1', 'durP1', 'ratioP1', 'P2', 'durP2', 'ratioP2']
             elif sensor_type in ['sht11', 'dht11', 'dht22', 'sht10', 'sht15']:
                 key_list = ['temperature', 'humidity']
