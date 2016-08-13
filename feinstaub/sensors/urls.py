@@ -11,6 +11,7 @@ from .views import (
 )
 from main.views import UsersView
 
+
 router = routers.DefaultRouter()
 router.register(r'push-sensor-data', PostSensorDataView, base_name="push-sensor-data")
 router.register(r'node', NodeView)
@@ -20,10 +21,8 @@ router.register(r'statistics', StatisticsView, base_name='statistics')
 router.register(r'user', UsersView)
 router.register(r'now', NowView)
 
-
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(
         regex=r'^', view=include(router.urls)
     ),
-)
+]
