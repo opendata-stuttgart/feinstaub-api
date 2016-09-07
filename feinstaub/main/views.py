@@ -22,6 +22,3 @@ class UsersView(mixins.ListModelMixin,
         if self.request.user.groups.filter(name="show_me_everything").exists():
             return User.objects.all()
         return User.objects.filter(pk=self.request.user.pk)
-
-
-

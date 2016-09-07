@@ -154,10 +154,10 @@ class StatisticsView(viewsets.ViewSet):
 class AddSensordeviceView(FormView):
     form_class = AddSensordeviceForm
     template_name = 'addsensordevice.html'
-    
+
     def form_valid(self, form):
         if form.cleaned_data.get('value'):
-            
+
             #? needed?
             thing, created = Thing.objects.get_or_create(
                 field=form.cleaned_data.get('field'),
@@ -170,6 +170,6 @@ class AddSensordeviceView(FormView):
                                      'an error occurred')
         messages.add_message(self.request, messages.INFO, self.success_msg)
         return super().form_valid(form)
-    
+
     #def get_success_url(self):
-        #return reverse('admin:xxx_create')    
+        #return reverse('admin:xxx_create')

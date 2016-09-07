@@ -16,17 +16,17 @@ TODO:
 * access only for AUTH users
 * save form
 * take DB user from AUTH
-* step 1: 
+* step 1:
 	* create new location from location_*
 * step 2:
-	* create node description from user data + description, 
+	* create node description from user data + description,
         * device_uid
         * description = description + device_initials (name to be written on chip, might be derived from user data, optional: with counter)
 	* insert node, get nodeID
 * step 2:
     * multiple sensors to be inserted, insert two
-    * two sensors, 
-    	* select sensor_type, senpin
+    * two sensors,
+        * select sensor_type, senpin
         * check for second sensor_type == '--- No sensor ---'
         * select type of sensor, pin
         * add to description: device_initials and sensor_type, e.g. "AA2-DHT"
@@ -34,4 +34,3 @@ TODO:
 # code examples
 
 from https://gist.github.com/mfa/cb97982a4b3874ab2e8f5453d5077782
-
