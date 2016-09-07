@@ -1,8 +1,11 @@
 import datetime
 import django_filters
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.db.models import Q
 from django.utils import timezone
+from django.views.generic.edit import FormView
 
 from rest_framework import mixins, viewsets, filters, pagination
 from rest_framework.response import Response
@@ -24,6 +27,7 @@ from .models import (
     SensorLocation,
     SensorType,
 )
+from .forms import AddSensordeviceForm
 
 
 class StandardResultsSetPagination(pagination.PageNumberPagination):
@@ -147,3 +151,28 @@ class StatisticsView(viewsets.ViewSet):
             }
         }
         return Response(stats)
+
+
+class AddSensordeviceView(LoginRequiredMixin, FormView):
+    login_url = '/admin/login/'
+    form_class = AddSensordeviceForm
+    template_name = 'addsensordevice.html'
+
+    def form_valid(self, form):
+        if form.cleaned_data.get('value'):
+            # TODO: add logic to write all the data into the database
+            pass
+
+            # thing, created = Thing.objects.get_or_create(
+            #     field=form.cleaned_data.get('field'),
+            #     defaults={'optional_field': form.cleaned_data.get('field2')},
+            # )
+            # if not created:
+            #     messages.add_message(self.request,
+            #                          messages.ERROR,
+            #                          'an error occurred')
+        messages.add_message(self.request, messages.INFO, "not implemented yet.")
+        return super().form_valid(form)
+
+    #def get_success_url(self):
+        #return reverse('admin:xxx_create')
