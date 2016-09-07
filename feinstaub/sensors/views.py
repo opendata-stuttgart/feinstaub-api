@@ -2,6 +2,7 @@ import datetime
 import django_filters
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.db.models import Q
 from django.utils import timezone
 from django.views.generic.edit import FormView
@@ -159,18 +160,18 @@ class AddSensordeviceView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         if form.cleaned_data.get('value'):
+            # TODO: add logic to write all the data into the database
+            pass
 
-            #? needed?
-            thing, created = Thing.objects.get_or_create(
-                field=form.cleaned_data.get('field'),
-                defaults={'optional_field': form.cleaned_data.get('field2')},
-            )
-            if not created:
-                #? messages?
-                messages.add_message(self.request,
-                                     messages.ERROR,
-                                     'an error occurred')
-        messages.add_message(self.request, messages.INFO, self.success_msg)
+            # thing, created = Thing.objects.get_or_create(
+            #     field=form.cleaned_data.get('field'),
+            #     defaults={'optional_field': form.cleaned_data.get('field2')},
+            # )
+            # if not created:
+            #     messages.add_message(self.request,
+            #                          messages.ERROR,
+            #                          'an error occurred')
+        messages.add_message(self.request, messages.INFO, "not implemented yet.")
         return super().form_valid(form)
 
     #def get_success_url(self):
