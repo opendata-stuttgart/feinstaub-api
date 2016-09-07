@@ -1,5 +1,6 @@
 import datetime
 import django_filters
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils import timezone
@@ -151,7 +152,8 @@ class StatisticsView(viewsets.ViewSet):
         return Response(stats)
 
 
-class AddSensordeviceView(FormView):
+class AddSensordeviceView(LoginRequiredMixin, FormView):
+    login_url = '/admin/login/'
     form_class = AddSensordeviceForm
     template_name = 'addsensordevice.html'
 
