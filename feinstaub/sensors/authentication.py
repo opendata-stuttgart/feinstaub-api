@@ -25,8 +25,12 @@ class NodeUidAuthentication(authentication.BaseAuthentication):
             # compatibility
             node_uid = request.META.get('HTTP_SENSOR')
             if not node_uid:
-                return None
-        node_pin = request.META.get('HTTP_PIN', '-')
+                node_uid = request.META.get('HTTP_X_SENSOR')
+                if not node_uid:
+                    return None
+        node_pin = request.META.get('HTTP_PIN')
+        if not node_pin:
+            node_pin = request.META.get('HTTP_X_PIN','-')
 
         try:
             node = Node.objects.get(uid=node_uid)
