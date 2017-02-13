@@ -20,17 +20,11 @@ class IsSensorValid(permissions.BasePermission):
 
 class NodeUidAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
-        node_uid = request.META.get('HTTP_NODE')
+        node_uid = request.META.get('HTTP_X_SENSOR') or request.META.get('HTTP_SENSOR') or request.META.get('HTTP_NODE')
         if not node_uid:
-            # compatibility
-            node_uid = request.META.get('HTTP_SENSOR')
-            if not node_uid:
-                node_uid = request.META.get('HTTP_X_SENSOR')
-                if not node_uid:
-                    return None
-        node_pin = request.META.get('HTTP_PIN')
-        if not node_pin:
-            node_pin = request.META.get('HTTP_X_PIN','-')
+            return None
+
+        node_pin = request.META.get('HTTP_X_PIN') or request.META.get('HTTP_PIN','-')
 
         try:
             node = Node.objects.get(uid=node_uid)
