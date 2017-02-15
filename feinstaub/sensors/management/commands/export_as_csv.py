@@ -27,10 +27,7 @@ class Command(BaseCommand):
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
         start_date = str2date(options.get('start_date'), yesterday)
         end_date = str2date(options.get('end_date'), yesterday)
-        if options.get('type'):
-            sensor_type = options.get('type').lower()
-        else:
-            sensor_type = "ppd42ns"
+        sensor_type = (options.get('type') or 'ppd42ns').lower()
 
         if start_date > end_date:
             print("end_date is before start_date")
@@ -66,25 +63,26 @@ class Command(BaseCommand):
             os.makedirs(os.path.join(folder, str(dt)), exist_ok=True)
 
             # if file exists; overwrite. always
-            key_list = []
-            if sensor_type == 'ppd42ns' or sensor_type == 'sds011':
-                key_list = ['P1', 'durP1', 'ratioP1', 'P2', 'durP2', 'ratioP2']
-            elif sensor_type in ['sht11', 'dht11', 'dht22', 'sht10', 'sht15']:
-                key_list = ['temperature', 'humidity']
-            elif sensor_type == "bmp180":
-                key_list = ['pressure', 'altitude', 'pressure_sealevel', 'temperature']
-            elif sensor_type == "photoresistor":
-                key_list = ['brightness']
-
             self._write_file(
                 filepath=os.path.join(folder, str(dt), fn),
-                key_list=key_list,
                 qs=qs,
                 sensor=sensor,
             )
 
     @staticmethod
-    def _write_file(filepath, key_list, qs, sensor):
+    def _write_file(filepath, qs, sensor):
+        sensor_type = sensor.sensor_type.name.lower()
+        if sensor_type == 'ppd42ns' or sensor_type == 'sds011':
+            key_list = ['P1', 'durP1', 'ratioP1', 'P2', 'durP2', 'ratioP2']
+        elif sensor_type in ['sht11', 'dht11', 'dht22', 'sht10', 'sht15']:
+            key_list = ['temperature', 'humidity']
+        elif sensor_type == "bmp180":
+            key_list = ['pressure', 'altitude', 'pressure_sealevel', 'temperature']
+        elif sensor_type == "photoresistor":
+            key_list = ['brightness']
+        else:
+            key_list = []
+
         with open(filepath, "w") as fp:
             fp.write("sensor_id;sensor_type;location;lat;lon;timestamp;")
             fp.write(';'.join(key_list))
@@ -96,7 +94,7 @@ class Command(BaseCommand):
                 }
                 if not sensordata:
                     continue
-                if sensor.sensor_type.name.lower() == 'ppd42ns' and 'P1' not in sensordata:
+                if sensor_type == 'ppd42ns' and 'P1' not in sensordata:
                     continue
 
                 longitude = ''
