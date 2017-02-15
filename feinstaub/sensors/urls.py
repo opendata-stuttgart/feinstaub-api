@@ -1,6 +1,6 @@
 # coding=utf-8
 from rest_framework import routers
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from .views import (
     NodeView,
     PostSensorDataView,

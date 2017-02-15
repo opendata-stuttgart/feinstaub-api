@@ -12,8 +12,8 @@ class TestSensorDataPush:
         # value, status_code, count
         [[{"value": 10, "value_type": "P1"}], 201, 1],
         [[{"value": 10, "value_type": "P1"}, {"value": 99, "value_type": "P2"}], 201, 2],
-        ## failes:
-        [[], 400, 0],   # because list of sensordatavalues is empty
+        # failes:
+        [[], 400, 0],  # because list of sensordatavalues is empty
         ['INVALID', 400, 1],
         [['INVALID'], 400, 1],
         [[{'INVALID_KEY': 1}], 400, 1],

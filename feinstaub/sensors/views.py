@@ -174,5 +174,5 @@ class AddSensordeviceView(LoginRequiredMixin, FormView):
         messages.add_message(self.request, messages.INFO, "not implemented yet.")
         return super().form_valid(form)
 
-    #def get_success_url(self):
-        #return reverse('admin:xxx_create')
+    # def get_success_url(self):
+    #     return reverse('admin:xxx_create')
