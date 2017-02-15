@@ -11,6 +11,7 @@ ipython
 opbeat
 pandas
 psycopg2==2.6
+pylama
 pytest-django==2.8.0
 pytest==2.6.3
 python-dateutil
