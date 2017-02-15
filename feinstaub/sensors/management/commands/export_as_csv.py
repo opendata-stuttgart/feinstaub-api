@@ -76,37 +76,46 @@ class Command(BaseCommand):
             elif sensor_type == "photoresistor":
                 key_list = ['brightness']
 
-            with open(os.path.join(folder, str(dt), fn), "w") as fp:
-                fp.write("sensor_id;sensor_type;location;lat;lon;timestamp;")
-                fp.write(';'.join(key_list))
+            self._write_file(
+                filepath=os.path.join(folder, str(dt), fn),
+                key_list=key_list,
+                qs=qs,
+                sensor=sensor,
+            )
+
+    @staticmethod
+    def _write_file(filepath, key_list, qs, sensor):
+        with open(filepath, "w") as fp:
+            fp.write("sensor_id;sensor_type;location;lat;lon;timestamp;")
+            fp.write(';'.join(key_list))
+            fp.write("\n")
+            for sd in qs:
+                sensordata = {
+                    data['value_type']: data['value']
+                    for data in sd.sensordatavalues.values('value_type', 'value')
+                }
+                if not sensordata:
+                    continue
+                if sensor.sensor_type.name.lower() == 'ppd42ns' and 'P1' not in sensordata:
+                    continue
+
+                longitude = ''
+                if sd.location.longitude:
+                    longitude = "{:.3f}".format(sd.location.longitude)
+                latitude = ''
+                if sd.location.latitude:
+                    latitude = "{:.3f}".format(sd.location.latitude)
+                s = ';'.join([str(sensor.id),
+                              sensor.sensor_type.name,
+                              str(sd.location.id),
+                              latitude,
+                              longitude,
+                              sd.timestamp.isoformat()])
+
+                fp.write(s)
+                fp.write(';')
+                fp.write(';'.join([sensordata.get(i, '') for i in key_list]))
                 fp.write("\n")
-                for sd in qs:
-                    sensordata = {
-                        data['value_type']: data['value']
-                        for data in sd.sensordatavalues.values('value_type', 'value')
-                    }
-                    if not sensordata:
-                        continue
-                    if sensor_type == 'ppd42ns' and 'P1' not in sensordata:
-                        continue
-
-                    longitude = ''
-                    if sd.location.longitude:
-                        longitude = "{:.3f}".format(sd.location.longitude)
-                    latitude = ''
-                    if sd.location.latitude:
-                        latitude = "{:.3f}".format(sd.location.latitude)
-                    s = ';'.join([str(sensor.id),
-                                  sensor.sensor_type.name,
-                                  str(sd.location.id),
-                                  latitude,
-                                  longitude,
-                                  sd.timestamp.isoformat()])
-
-                    fp.write(s)
-                    fp.write(';')
-                    fp.write(';'.join([sensordata.get(i, '') for i in key_list]))
-                    fp.write("\n")
 
     @staticmethod
     def _dates(start, end):
