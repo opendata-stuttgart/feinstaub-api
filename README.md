@@ -1,4 +1,4 @@
-# feinstaub-api
+# feinstaub-api [![Build Status](https://travis-ci.org/opendata-stuttgart/feinstaub-api.svg?branch=master)](https://travis-ci.org/opendata-stuttgart/feinstaub-api)
 
 Api to save data from sensors (especially particulates sensors).
 
