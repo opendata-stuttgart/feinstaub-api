@@ -1,7 +1,7 @@
 Django<1.10
 Pillow
 bpython
-django-extensions
+django-extensions<1.7.6
 django-filter
 django-flat-theme
 django-redis
