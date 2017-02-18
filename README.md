@@ -49,7 +49,7 @@ https://github.com/opendata-stuttgart/meta/wiki/Protokoll-installation-von-feins
 ```
 # database
 docker run -d --name db-data -v /var/lib/postgres busybox
-docker run -d --restart=always --volumes-from db-data --name feinstaub-db postgres:9.4
+docker run -d --restart=always --volumes-from db-data --name feinstaub-db postgres:9.6
 
 # redis
 docker run -d --name redis-data -v /data busybox
