@@ -1,4 +1,4 @@
-Django<1.10
+Django<1.11
 Pillow>=4.0.0,<4.1
 bpython==0.16
 django-extensions<1.7.6
