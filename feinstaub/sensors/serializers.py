@@ -32,6 +32,10 @@ class SensorDataSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # custom create, because of nested list of sensordatavalues
 
+        sensordatavalues = validated_data.pop('sensordatavalues', [])
+        if not sensordatavalues:
+            raise exceptions.ValidationError('sensordatavalues was empty. Nothing to save.')
+
         # use sensor from authenticator
         successful_authenticator = self.context['request'].successful_authenticator
         if not successful_authenticator:
@@ -39,25 +43,26 @@ class SensorDataSerializer(serializers.ModelSerializer):
 
         node, pin = successful_authenticator.authenticate(self.context['request'])
         if node.sensors.count() == 1:
-            validated_data['sensor'] = node.sensors.first()
+            sensors_qs = node.sensors.all()
         else:
-            validated_data['sensor'] = node.sensors.filter(pin=pin).first()
+            sensors_qs = node.sensors.filter(pin=pin)
+        sensor_id = sensors_qs.values_list('pk', flat=True).first()
 
-        if not validated_data['sensor']:
+        if not sensor_id:
             raise exceptions.ValidationError('sensor could not be selected.')
-
-        sensordatavalues = validated_data.pop('sensordatavalues')
-        if not len(sensordatavalues):
-            raise exceptions.ValidationError('sensordatavalues was empty. Nothing to save.')
+        validated_data['sensor_id'] = sensor_id
 
         # set location based on current location of sensor
         validated_data['location'] = node.location
         sd = SensorData.objects.create(**validated_data)
 
-        for value in sensordatavalues:
-            # set sensordata to newly created SensorData
-            value['sensordata'] = sd
-            SensorDataValue.objects.create(**value)
+        SensorDataValue.objects.bulk_create(
+            SensorDataValue(
+                sensordata_id=sd.pk,
+                **value,
+            )
+            for value in sensordatavalues
+        )
 
         return sd
 
