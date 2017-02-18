@@ -1,6 +1,5 @@
 Django<1.11
 Pillow>=4.0.0,<4.1
-bpython==0.16
 django-extensions<1.7.6
 django-filter>=1.0.1,<1.1
 django-flat-theme>=1.1.4,<1.2
