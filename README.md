@@ -64,7 +64,7 @@ docker build --tag=feinstaub-prod .
 # docker run --rm -ti --volumes-from feinstaub-data --link feinstaub-db:db feinstaub-prod python3 manage.py reset_db
 # docker run --rm -ti --volumes-from feinstaub-data --link feinstaub-db:db feinstaub-prod python3 manage.py createsuperuser
 docker run -d --volumes-from feinstaub-data --link feinstaub-db:db --link feinstaub-redis:redis --restart=always --name feinstaub feinstaub-prod
-docker run --name feinstaub-nginx --net="host" --volumes-from feinstaub-data --restart=always -v `pwd`/nginx.conf:/etc/nginx/nginx.conf -d nginx
+docker run --name feinstaub-nginx --net="host" --volumes-from feinstaub-data --restart=always -v `pwd`/nginx.conf:/etc/nginx/nginx.conf -d nginx:1.11
 
 
 ### rebuild, update
