@@ -60,6 +60,7 @@ docker run -d --name feinstaub-data -v /home/uid1000 aexea/aexea-base
 docker build --tag=feinstaub-prod .
 # reset database on first run
 # docker run --rm -ti -v $(pwd)/../feinstaub-data:/home/uid1000 --link feinstaub-db:db feinstaub-prod python3 manage.py reset_db
+# docker run --rm -ti -v $(pwd)/../feinstaub-data:/home/uid1000 --link feinstaub-db:db feinstaub-prod python3 manage.py migrate
 # docker run --rm -ti -v $(pwd)/../feinstaub-data:/home/uid1000 --link feinstaub-db:db feinstaub-prod python3 manage.py createsuperuser
 docker run -d -v $(pwd)/../feinstaub-data:/home/uid1000 --link feinstaub-db:db --link feinstaub-redis:redis --restart=always --name feinstaub feinstaub-prod
 docker run --name feinstaub-nginx --net="host" -v $(pwd)/../feinstaub-data:/home/uid1000 --restart=always -v `pwd`/nginx.conf:/etc/nginx/nginx.conf -d nginx:1.11
