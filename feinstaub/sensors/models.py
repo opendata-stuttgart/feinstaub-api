@@ -32,11 +32,15 @@ class Node(TimeStampedModel):
 
 class Sensor(TimeStampedModel):
     node = models.ForeignKey(Node, related_name="sensors")
-    pin = models.CharField(max_length=10, default="-",
-                           help_text="differentiate the sensors on one node by giving pin used")
+    pin = models.CharField(
+        max_length=10,
+        default='-',
+        db_index=True,
+        help_text='differentiate the sensors on one node by giving pin used',
+    )
     sensor_type = models.ForeignKey(SensorType)
     description = models.TextField(null=True, blank=True)
-    public = models.BooleanField(default=False)
+    public = models.BooleanField(default=False, db_index=True)
 
     class Meta:
         unique_together = ('node', 'pin')
@@ -49,10 +53,13 @@ class SensorData(TimeStampedModel):
     sensor = models.ForeignKey(Sensor, related_name="sensordatas")
     sampling_rate = models.IntegerField(null=True, blank=True,
                                         help_text="in milliseconds")
-    timestamp = models.DateTimeField(default=now)
+    timestamp = models.DateTimeField(default=now, db_index=True)
     location = models.ForeignKey("SensorLocation", blank=True)
     software_version = models.CharField(max_length=100, default="",
                                         help_text="sensor software version")
+
+    class Meta(TimeStampedModel.Meta):
+        index_together = (('modified', ), )
 
     def __str__(self):
         return "{sensor} [{value_count}]".format(
