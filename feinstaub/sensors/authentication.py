@@ -2,7 +2,7 @@ from rest_framework import authentication
 from rest_framework import permissions
 from rest_framework import exceptions
 
-from .models import Node, SensorData
+from .models import Node, Sensor, SensorData, SensorDataValue
 
 
 class IsSensorValid(permissions.BasePermission):
@@ -38,10 +38,24 @@ class OwnerPermission(permissions.BasePermission):
     """Checks if authenticated user is owner of the node"""
 
     def has_object_permission(self, request, view, obj):
-        if hasattr(obj, 'sensordata'):
-            obj = obj.sensordata
-        if hasattr(obj, 'sensor'):
-            obj = obj.sensor
-        if hasattr(obj, 'node'):
-            obj = obj.node
-        return request.user == obj.owner
+        if isinstance(obj, SensorDataValue):
+            owner_pk = SensorDataValue.objects \
+                .filter(pk=obj.pk) \
+                .values_list('sensordata__sensor__node__owner_id', flat=True) \
+                .first()
+        elif isinstance(obj, SensorData):
+            owner_pk = SensorData.objects \
+                .filter(pk=obj.pk) \
+                .values_list('sensor__node__owner_id', flat=True) \
+                .first()
+        elif isinstance(obj, Sensor):
+            owner_pk = Sensor.objects \
+                .filter(pk=obj.pk) \
+                .values_list('node__owner_id', flat=True) \
+                .first()
+        elif isinstance(obj, Node):
+            owner_pk = obj.owner_id
+        else:
+            return False
+
+        return request.user.pk == owner_pk
