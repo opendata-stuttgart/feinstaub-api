@@ -12,9 +12,5 @@ web:
    - .:/opt/code
   ports:
    - "8000:8000"
-data:
-  image: aexea/aexea-base
-  volumes:
-    - /home/uid1000
 db:
   image: postgres:9.4
