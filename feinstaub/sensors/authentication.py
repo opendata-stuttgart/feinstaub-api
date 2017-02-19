@@ -5,19 +5,6 @@ from rest_framework import exceptions
 from .models import Node, Sensor, SensorData, SensorDataValue
 
 
-class IsSensorValid(permissions.BasePermission):
-
-    def has_object_permission(self, request, view, obj):
-        # sensor has owner
-        # owner can not be checked, because the sensor push has
-        # no SessionAuthentication or TokenAuthentication
-        if isinstance(obj, SensorData):
-            obj = obj.sensor
-        if hasattr(obj, 'owner'):
-            return obj.owner is not None
-        return None
-
-
 class NodeUidAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         node_uid = request.META.get('HTTP_X_SENSOR') or request.META.get('HTTP_SENSOR') or request.META.get('HTTP_NODE')

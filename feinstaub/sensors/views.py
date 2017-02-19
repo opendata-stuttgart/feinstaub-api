@@ -10,7 +10,7 @@ from django.views.generic.edit import FormView
 from rest_framework import mixins, viewsets, filters, pagination
 from rest_framework.response import Response
 
-from .authentication import IsSensorValid, OwnerPermission, NodeUidAuthentication
+from .authentication import OwnerPermission, NodeUidAuthentication
 from .serializers import (
     SensorDataSerializer,
     NodeSerializer,
@@ -42,7 +42,7 @@ class PostSensorDataView(mixins.RetrieveModelMixin,
     """ This endpoint is to POST data from the sensor to the api.
     """
     authentication_classes = (NodeUidAuthentication,)
-    permission_classes = (IsSensorValid,)
+    permission_classes = tuple()
     serializer_class = SensorDataSerializer
     queryset = SensorData.objects.all()
 
