@@ -36,8 +36,7 @@ class StandardResultsSetPagination(pagination.PageNumberPagination):
     max_page_size = 1000
 
 
-class PostSensorDataView(mixins.RetrieveModelMixin,
-                         mixins.CreateModelMixin,
+class PostSensorDataView(mixins.CreateModelMixin,
                          viewsets.GenericViewSet):
     """ This endpoint is to POST data from the sensor to the api.
     """
