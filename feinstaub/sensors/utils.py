@@ -47,7 +47,7 @@ def sensordata_to_dataframe(location):
             'sampling_rate': [sensordata.sampling_rate],
         }
         for sensordata in SensorData.objects.filter(location=location)
-        for datavalue in SensorDataValue.objects.filter(sensordata=sensordata)
+        for datavalue in sensordata.sensordatavalues.all()
     ]
 
     return pd.DataFrame(
@@ -72,20 +72,25 @@ def export_to_csv():
                 'dsm501a',
                 'GP2Y1010AU0F',
                 'PPD42NS',
-            ])
+            ]) \
+            .values(
+                'pk', 'timestamp', 'sensor__sensor_type__name',
+                'location__indoor', 'location__pk', 'sampling_rate',
+            )
 
         for element in elements:
             d = {
-                'timestamp': str(element.timestamp),
-                'type': element.sensor.sensor_type.name,
-                'indoor': element.location.indoor,
-                'location_id': element.location.pk,
-                'sampling_rate': element.sampling_rate,
+                'timestamp': str(element['timestamp']),
+                'type': element['sensor__sensor_type__name'],
+                'indoor': element['location__indoor'],
+                'location_id': element['location__pk'],
+                'sampling_rate': element['sampling_rate'],
             }
 
-            d.update({
-                data.value_type: data.value
-                for data in element.sensordatavalues.all()
-            })
+            d.update(dict(
+                SensorDataValue.objects
+                .filter(sensordata_id=element['pk'])
+                .values_list('value_type', 'value')
+            ))
 
             csvwriter.writerow(d)
