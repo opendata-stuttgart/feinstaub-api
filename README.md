@@ -28,8 +28,8 @@ Daily CSV dumps: http://archive.luftdaten.info/
 * wait
 * maybe create a database (if non existent):
 ```
-docker-compose run web python3 manage.py reset_db
-docker-compose run web python3 manage.py migrate
+docker-compose run --rm web python3 manage.py reset_db
+docker-compose run --rm web python3 manage.py migrate
 ```
 
 ## production tutorial
@@ -126,5 +126,5 @@ add volume mount to db container:
 and run dump command:
 
 ```
-docker-compose run db pg_dump -Fc -h db -v -U postgres feinstaub -f /opt/code/feinstaub-api-db.dump
+docker-compose run --rm db pg_dump -Fc -h db -v -U postgres feinstaub -f /opt/code/feinstaub-api-db.dump
 ```
