@@ -22,6 +22,8 @@ class Node(TimeStampedModel):
     owner = models.ForeignKey(User)
     description = models.TextField(null=True, blank=True)
     location = models.ForeignKey("SensorLocation")
+    email = models.EmailField(null=True, blank=True)
+    description_internal = models.TextField(null=True, blank=True) # for internal purposes, should never been provided via API / dump / ...
 
     class Meta:
         ordering = ['uid', ]
@@ -136,6 +138,15 @@ class SensorLocation(TimeStampedModel):
     latitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
     longitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
     indoor = models.BooleanField(default=False)
+    street_name = models.TextField(null=True, blank=True)
+    street_number = models.TextField(null=True, blank=True)
+    postalcode = models.TextField(null=True, blank=True)
+    city = models.TextField(null=True, blank=True)
+    height = models.IntegerField(null=True)
+    sensor_position = models.IntegerField(null=True) # 0 = no information, 1 = in backyard, 10 = just in front of the house at the street
+    traffic_in_area = models.IntegerField(null=True) # 0 = no information, 1 = far away from traffic, 10 = lot's of traffic in area
+    oven_in_area = models.IntegerField(null=True) # 0 = no information, 1 = no ovens in area, 10 = it REALLY smells
+    industry_in_area = models.IntegerField(null=True) # 0 = no information, 1 = no industry in area, 10 = industry all around
     owner = models.ForeignKey(User, null=True, blank=True,
                               help_text="If not set, location is public.")
     description = models.TextField(null=True, blank=True)
