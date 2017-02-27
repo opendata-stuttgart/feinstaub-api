@@ -142,11 +142,11 @@ class SensorLocation(TimeStampedModel):
     street_number = models.TextField(null=True, blank=True)
     postalcode = models.TextField(null=True, blank=True)
     city = models.TextField(null=True, blank=True)
-    height = IntegerField(null=True)
-    sensor_position = IntegerField(null=True) # 0 = no information, 1 = in backyard, 10 = just in front of the house at the street
-    traffic_in_area = IntegerField(null=True) # 0 = no information, 1 = far away from traffic, 10 = lot's of traffic in area
-    oven_in_area = IntegerField(null=True) # 0 = no information, 1 = no ovens in area, 10 = it REALLY smells
-    industry_in_area = IntegerField(null=True) # 0 = no information, 1 = no industry in area, 10 = industry all around
+    height = models.IntegerField(null=True)
+    sensor_position = models.IntegerField(null=True) # 0 = no information, 1 = in backyard, 10 = just in front of the house at the street
+    traffic_in_area = models.IntegerField(null=True) # 0 = no information, 1 = far away from traffic, 10 = lot's of traffic in area
+    oven_in_area = models.IntegerField(null=True) # 0 = no information, 1 = no ovens in area, 10 = it REALLY smells
+    industry_in_area = models.IntegerField(null=True) # 0 = no information, 1 = no industry in area, 10 = industry all around
     owner = models.ForeignKey(User, null=True, blank=True,
                               help_text="If not set, location is public.")
     description = models.TextField(null=True, blank=True)
