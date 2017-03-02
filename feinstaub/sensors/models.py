@@ -20,6 +20,7 @@ class SensorType(TimeStampedModel):
 class Node(TimeStampedModel):
     uid = models.SlugField(unique=True)
     owner = models.ForeignKey(User)
+    name = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     height = models.IntegerField(null=True)
     sensor_position = models.IntegerField(null=True) # 0 = no information, 1 = in backyard, 10 = just in front of the house at the street
@@ -144,6 +145,7 @@ class SensorLocation(TimeStampedModel):
     street_number = models.TextField(null=True, blank=True)
     postalcode = models.TextField(null=True, blank=True)
     city = models.TextField(null=True, blank=True)
+    country = models.TextField(null=True, blank=True)
     traffic_in_area = models.IntegerField(null=True) # 0 = no information, 1 = far away from traffic, 10 = lot's of traffic in area
     oven_in_area = models.IntegerField(null=True) # 0 = no information, 1 = no ovens in area, 10 = it REALLY smells
     industry_in_area = models.IntegerField(null=True) # 0 = no information, 1 = no industry in area, 10 = industry all around
