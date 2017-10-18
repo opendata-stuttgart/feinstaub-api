@@ -74,10 +74,16 @@ class Command(BaseCommand):
         sensor_type = sensor.sensor_type.name.lower()
         if sensor_type == 'ppd42ns' or sensor_type == 'sds011':
             key_list = ['P1', 'durP1', 'ratioP1', 'P2', 'durP2', 'ratioP2']
-        elif sensor_type in ['sht11', 'dht11', 'dht22', 'sht10', 'sht15']:
+        elif sensor_type == 'pms1003' or sensor_type == 'pms3003' or sensor_type == 'pms5003' or sensor_type == 'pms6003' or sensor_type == 'pms7003':
+            key_list = ['P1', 'P2', 'P0']
+        elif sensor_type in ['ds18b20']:
+            key_list = ['temperature']
+        elif sensor_type in ['dht11', 'dht22', 'htu21d', 'sht10', 'sht11', 'sht15']:
             key_list = ['temperature', 'humidity']
-        elif sensor_type == "bmp180":
+        elif sensor_type == "bmp180" or sensor_type == 'bpm280':
             key_list = ['pressure', 'altitude', 'pressure_sealevel', 'temperature']
+        elif sensor_type == "bme280":
+            key_list = ['pressure', 'altitude', 'pressure_sealevel', 'temperature','humidity']
         elif sensor_type == "photoresistor":
             key_list = ['brightness']
         else:
