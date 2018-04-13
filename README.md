@@ -1,4 +1,4 @@
-# feinstaub-api [![Build Status](https://travis-ci.org/opendata-stuttgart/feinstaub-api.svg?branch=master)](https://travis-ci.org/opendata-stuttgart/feinstaub-api)
+# sensors.AFRICA Air Quality API [![Build Status](https://travis-ci.org/CodeForAfricaLabs/sensors.AFRICA-AQ-api.svg?branch=master)](https://travis-ci.org/CodeForAfricaLabs/sensors.AFRICA-AQ-api)
 
 Api to save data from sensors (especially particulates sensors).
 
@@ -128,3 +128,42 @@ and run dump command:
 ```
 docker-compose run --rm db pg_dump -Fc -h db -v -U postgres feinstaub -f /opt/code/feinstaub-api-db.dump
 ```
+
+--- 
+
+## Deployement
+
+To deploy the API, we use Dokku.
+
+```
+
+dokku apps:create sensors-aq-api
+
+dokku proxy:ports-set sensors-aq-api http:80:8000
+
+```
+
+---
+
+# License
+
+Copyright (c) 2018 Code for Africa
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
