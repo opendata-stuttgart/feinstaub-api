@@ -73,7 +73,8 @@ class SensorData(TimeStampedModel):
 
 
 SENSOR_TYPE_CHOICES = (
-    # ppd42ns
+    # ppd42ns P1 -> 1µm / SDS011 P1 -> 10µm
+    ('P0', '1µm particles'),
     ('P1', '1µm particles'),
     ('P2', '2.5µm particles'),
     ('durP1', 'duration 1µm'),
