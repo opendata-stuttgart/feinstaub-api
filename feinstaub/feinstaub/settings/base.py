@@ -13,6 +13,8 @@ SECRET_KEY = '%_qp8x233p&#zrt1y1v_kgp0a6ryj6(9&rr&j!f=xfyv1p%gg8'
 
 ALLOWED_HOSTS = []
 
+DEBUG = False
+
 
 # Application definition
 

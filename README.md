@@ -129,17 +129,49 @@ and run dump command:
 docker-compose run --rm db pg_dump -Fc -h db -v -U postgres feinstaub -f /opt/code/feinstaub-api-db.dump
 ```
 
---- 
+---
 
 ## Deployement
 
 To deploy the API, we use Dokku.
 
+### Postgres
+```
+sudo docker pull postgres:9.6
+
+sudo docker tag postgres:9.6 dokku/postgres:9.6
+
+dokku apps:create postgres
+
+sudo docker volume create --name feinstaub-db-data
+
+dokku docker-options:add postgres run,deploy --volume feinstaub-db-data:/var/lib/postgres
+
+dokku tags:deploy postgres 9.6
+
+# create database if non exists
+
+dokku enter postgres
+
+> createdb feinstaub -U postgres
 ```
 
+### API
+
+```
 dokku apps:create sensors-aq-api
 
-dokku proxy:ports-set sensors-aq-api http:80:8000
+#Link to postgres
+dokku docker-options:add sensors-aq-api run,deploy --link postgres.web.1:db
+
+#Bind mount for static
+dokku docker-options:add sensors-aq-api run,deploy --volume $(pwd)/../feinstaub-data:/home/uid1000
+
+dokku proxy:ports-add sensors-aq-api http:8000:8000
+
+git remote add dokku dokku@api.aq.sensors.africa:sensors-aq-api
+
+git push dokku
 
 ```
 
@@ -166,4 +198,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
