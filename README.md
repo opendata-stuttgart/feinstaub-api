@@ -163,13 +163,15 @@ dokku apps:create sensors-aq-api
 
 dokku config:set sensors-aq-api \
     API_SECRET_KEY=... \
-    API_FORECAST_IO_KEY=... 
+    API_FORECAST_IO_KEY=...
 
 #Link to postgres
 dokku docker-options:add sensors-aq-api run,deploy --link postgres.web.1:db
 
 #Bind mount for static
 dokku docker-options:add sensors-aq-api run,deploy --volume $(pwd)/../feinstaub-data:/home/uid1000
+
+dokku config:set sensors-aq-api HOST_DIR=$(pwd)/../feinstaub-data
 
 dokku proxy:ports-add sensors-aq-api http:8000:8000
 
