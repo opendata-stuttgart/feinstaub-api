@@ -161,6 +161,10 @@ dokku enter postgres
 ```
 dokku apps:create sensors-aq-api
 
+dokku config:set sensors-aq-api \
+    API_SECRET_KEY=... \
+    API_FORECAST_IO_KEY=... 
+
 #Link to postgres
 dokku docker-options:add sensors-aq-api run,deploy --link postgres.web.1:db
 

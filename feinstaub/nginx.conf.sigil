@@ -1,4 +1,4 @@
-AA{{ range $port_map := .PROXY_PORT_MAP | split " " }}
+{{ range $port_map := .PROXY_PORT_MAP | split " " }}
 {{ $port_map_list := $port_map | split ":" }}
 {{ $scheme := index $port_map_list 0 }}
 {{ $listen_port := index $port_map_list 1 }}
