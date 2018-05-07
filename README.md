@@ -135,50 +135,61 @@ docker-compose run --rm db pg_dump -Fc -h db -v -U postgres feinstaub -f /opt/co
 
 To deploy the API, we use Dokku.
 
-### Postgres
 ```
-sudo docker pull postgres:9.6
-
-sudo docker tag postgres:9.6 dokku/postgres:9.6
-
-dokku apps:create postgres
-
-sudo docker volume create --name feinstaub-db-data
-
-dokku docker-options:add postgres run,deploy --volume feinstaub-db-data:/var/lib/postgres
-
-dokku tags:deploy postgres 9.6
-
-# create database if non exists
-
-dokku enter postgres
-
-> createdb feinstaub -U postgres
+ # for debian systems, installs dokku via apt-get
+ $ wget https://raw.githubusercontent.com/dokku/dokku/v0.11.3/bootstrap.sh
+ $ sudo DOKKU_TAG=v0.11.3 bash bootstrap.sh
+ # go to your server's IP and follow the web installer
 ```
 
-### API
+### Install + Create Dependencies
+
+Once installed, we can do the following:
+
+1. Create the Dokku app and add a domain to it
 
 ```
 dokku apps:create sensors-aq-api
+```
+2. Install Postgres (Optional)
 
+This is an optional step if you'd like to have Postgres installed locally;
+
+```
+sudo dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres
+dokku postgres:create sensors-aq-api-postgres
+
+```
+
+### Config
+
+```
 dokku config:set sensors-aq-api \
     API_SECRET_KEY=... \
-    API_FORECAST_IO_KEY=...
+    API_FORECAST_IO_KEY=... \
+    HOST_DIR=$(pwd)/../feinstaub-data\
+    POSTGRESQL_DATABASE=... \
+    POSTGRESQL_USERNAME=... \
+    POSTGRESQL_HOST=... \
+    POSTGRESQL_PORT... \
+    AWS_BUCKET_NAME=... \
+    AWS_URL_PREFIX=... \
+    AWS_SECRET_ACCESS_KEY=... \
+    AWS_REGION=... \
+    AWS_ACCESS_KEY=... \
 
-#Link to postgres
-dokku docker-options:add sensors-aq-api run,deploy --link postgres.web.1:db
 
-#Bind mount for static
+# Bind mount for static json dumps (TBD)
 dokku docker-options:add sensors-aq-api run,deploy --volume $(pwd)/../feinstaub-data:/home/uid1000
 
-dokku config:set sensors-aq-api HOST_DIR=$(pwd)/../feinstaub-data
+dokku proxy:ports-add sensors-aq-api http:80:8000
 
-dokku proxy:ports-add sensors-aq-api http:8000:8000
+```
 
+# Deploy
+```
 git remote add dokku dokku@api.aq.sensors.africa:sensors-aq-api
-
 git push dokku
-
 ```
 
 ---

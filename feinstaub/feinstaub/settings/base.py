@@ -7,7 +7,7 @@ SITE_ROOT = os.path.dirname(BASE_DIR)
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%_qp8x233p&#zrt1y1v_kgp0a6ryj6(9&rr&j!f=xfyv1p%gg8'
+SECRET_KEY = os.getenv("API_SECRET_KEY", '%_qp8x233p&#zrt1y1v_kgp0a6ryj6(9&rr&j!f=xfyv1p%gg8')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -58,10 +58,11 @@ WSGI_APPLICATION = 'feinstaub.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'feinstaub',
-        'USER': 'postgres',
-        'HOST': 'db',
-        'PORT': 5432,
+        'NAME': os.getenv("POSTGRESQL_DATABASE",'feinstaub'),
+        'USER': os.getenv("POSTGRESQL_USERNAME", 'postgres'),
+        'HOST': os.getenv("POSTGRESQL_HOST", 'db'),
+        'PASSWORD': os.getenv("POSTGRESQL_PASSWORD", ""),
+        'PORT': os.getenv("POSTGRESQL_PORT", 5432),
     }
 }
 
