@@ -178,10 +178,6 @@ dokku config:set sensors-aq-api \
     AWS_REGION=... \
     AWS_ACCESS_KEY=... \
 
-
-# Bind mount for static json dumps (TBD)
-dokku docker-options:add sensors-aq-api run,deploy --volume $(pwd)/../feinstaub-data:/home/uid1000
-
 dokku proxy:ports-add sensors-aq-api http:80:8000
 
 ```
