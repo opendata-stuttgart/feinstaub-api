@@ -146,7 +146,7 @@ To deploy the API, we use Dokku.
 
 Once installed, we can do the following:
 
-1. Create the Dokku app and add a domain to it
+1. Create the Dokku app
 
 ```
 dokku apps:create sensors-aq-api
@@ -167,11 +167,7 @@ dokku postgres:create sensors-aq-api-postgres
 dokku config:set sensors-aq-api \
     API_SECRET_KEY=... \
     API_FORECAST_IO_KEY=... \
-    HOST_DIR=$(pwd)/../feinstaub-data\
-    POSTGRESQL_DATABASE=... \
-    POSTGRESQL_USERNAME=... \
-    POSTGRESQL_HOST=... \
-    POSTGRESQL_PORT... \
+    DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/NAME\
     AWS_BUCKET_NAME=... \
     AWS_URL_PREFIX=... \
     AWS_SECRET_ACCESS_KEY=... \

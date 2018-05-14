@@ -1,5 +1,6 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SITE_ROOT = os.path.dirname(BASE_DIR)
 
@@ -55,16 +56,8 @@ WSGI_APPLICATION = 'feinstaub.wsgi.application'
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 # Database in Docker container
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv("POSTGRESQL_DATABASE",'feinstaub'),
-        'USER': os.getenv("POSTGRESQL_USERNAME", 'postgres'),
-        'HOST': os.getenv("POSTGRESQL_HOST", 'db'),
-        'PASSWORD': os.getenv("POSTGRESQL_PASSWORD", ""),
-        'PORT': os.getenv("POSTGRESQL_PORT", 5432),
-    }
-}
+DATABASES = {}
+DATABASES['default'] = dj_database_url.parse(os.getenv("DATABASE_URL"), conn_max_age=600)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/

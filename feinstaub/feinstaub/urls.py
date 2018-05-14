@@ -3,13 +3,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.authtoken.views import obtain_auth_token
-
 from django.conf.urls.static import static
-
-
 from django.conf import settings
-
-
 from sensors.views import AddSensordeviceView
 
 
