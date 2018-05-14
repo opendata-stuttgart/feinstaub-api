@@ -1,6 +1,7 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import dj_database_url
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SITE_ROOT = os.path.dirname(BASE_DIR)
 
@@ -14,7 +15,7 @@ SECRET_KEY = os.getenv("API_SECRET_KEY", '%_qp8x233p&#zrt1y1v_kgp0a6ryj6(9&rr&j!
 
 ALLOWED_HOSTS = []
 
-DEBUG = False
+DEBUG = os.getenv('DJANGO_DEBUG', True)
 
 
 # Application definition
@@ -57,7 +58,9 @@ WSGI_APPLICATION = 'feinstaub.wsgi.application'
 
 # Database in Docker container
 DATABASES = {}
-DATABASES['default'] = dj_database_url.parse(os.getenv("DATABASE_URL"), conn_max_age=600)
+
+DATABASE_URL = os.getenv('DATABASE_URL',  'postgres://sensorsaq:sensorsaq@localhost:5432/sensorsaq')
+DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/

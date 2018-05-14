@@ -7,7 +7,7 @@ import os
 
 from .base import *
 
-DEBUG = True
+DEBUG = False
 
 # add your host here:
 ALLOWED_HOSTS = ['*']

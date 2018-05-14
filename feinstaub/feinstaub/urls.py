@@ -6,7 +6,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from django.conf.urls.static import static
 from django.conf import settings
 from sensors.views import AddSensordeviceView
-
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -17,4 +17,4 @@ urlpatterns = [
                            namespace='rest_framework')),
     url(r'^get-auth-token/', obtain_auth_token),
     url(r'^adddevice/', AddSensordeviceView.as_view(), name='adddevice'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + staticfiles_urlpatterns()
