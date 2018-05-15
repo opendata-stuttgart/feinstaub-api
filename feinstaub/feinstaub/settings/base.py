@@ -15,7 +15,7 @@ SECRET_KEY = os.getenv("API_SECRET_KEY", '%_qp8x233p&#zrt1y1v_kgp0a6ryj6(9&rr&j!
 
 ALLOWED_HOSTS = []
 
-DEBUG = os.getenv('DJANGO_DEBUG', True)
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE = (
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
