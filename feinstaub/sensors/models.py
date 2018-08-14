@@ -117,6 +117,10 @@ SENSOR_TYPE_CHOICES = (
     ('satelites', 'number of satelites'),
     ('speed', 'current speed over ground'),
     ('azimuth', 'track angle'),
+    ## noise sensor
+    ('noise_L01', 'Sound level L01'),
+    ('noise_L95', 'Sound level L95'),
+    ('noise_Leq', 'Sound level Leq'),
 )
 
 
