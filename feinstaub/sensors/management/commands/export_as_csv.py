@@ -2,6 +2,7 @@
 import os
 import datetime
 from itertools import product
+import boto3
 
 from django.core.management import BaseCommand
 
@@ -19,6 +20,7 @@ class Command(BaseCommand):
         parser.add_argument('--end_date')
         parser.add_argument('--type')
         parser.add_argument('--no_excludes', action="store_false")
+        parser.add_argument('--upload_s3')
 
     def handle(self, *args, **options):
         from sensors.models import Sensor, SensorData
@@ -68,6 +70,15 @@ class Command(BaseCommand):
                 qs=qs,
                 sensor=sensor,
             )
+
+            # Upload to s3
+            if options.get('upload_s3'):
+                # if file exists on s3; overwrite. always
+                self._upload_csv(
+                    tmp_path=os.path.join(folder, str(dt), fn),
+                    dest_filename=os.path.join(str(dt), fn),
+                    content_type="csv"
+                )
 
     @staticmethod
     def _write_file(filepath, qs, sensor):
@@ -127,3 +138,27 @@ class Command(BaseCommand):
         while current <= end:
             yield current
             current += datetime.timedelta(days=1)
+
+    @staticmethod
+    def _upload_csv(tmp_path, dest_filename, content_type):
+        bucket_name = os.getenv('AWS_BUCKET_NAME')
+        access_key = os.getenv('AWS_ACCESS_KEY')
+        secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+        url_prefix = os.getenv('AWS_URL_PREFIX')
+        region = os.getenv('AWS_REGION')
+
+        dest_path = os.path.join(url_prefix, dest_filename)
+        url = 'http://s3-%s.amazonaws.com/%s/%s' % (region, bucket_name, dest_path)
+
+        session = boto3.Session(aws_access_key_id=access_key, aws_secret_access_key=secret_access_key,
+                                region_name=region)
+        s3 = session.resource('s3')
+
+        bucket = s3.Bucket(bucket_name)
+        try:
+            bucket.upload_file(tmp_path, dest_path, ExtraArgs={'ContentType': content_type,
+                                                               'ContentDisposition': 'attachment',
+                                                               'ACL': "public-read"})
+            return url
+        except IOError as e:
+            return None

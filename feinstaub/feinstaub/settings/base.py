@@ -1,5 +1,7 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import dj_database_url
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SITE_ROOT = os.path.dirname(BASE_DIR)
 
@@ -7,11 +9,13 @@ SITE_ROOT = os.path.dirname(BASE_DIR)
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%_qp8x233p&#zrt1y1v_kgp0a6ryj6(9&rr&j!f=xfyv1p%gg8'
+SECRET_KEY = os.getenv("API_SECRET_KEY", '%_qp8x233p&#zrt1y1v_kgp0a6ryj6(9&rr&j!f=xfyv1p%gg8')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
 ALLOWED_HOSTS = []
+
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
 
 
 # Application definition
@@ -35,6 +39,7 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE = (
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -53,15 +58,10 @@ WSGI_APPLICATION = 'feinstaub.wsgi.application'
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 # Database in Docker container
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'feinstaub',
-        'USER': 'postgres',
-        'HOST': 'db',
-        'PORT': 5432,
-    }
-}
+DATABASES = {}
+
+DATABASE_URL = os.getenv('DATABASE_URL',  'postgres://sensorsaq:sensorsaq@localhost:5432/sensorsaq')
+DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/

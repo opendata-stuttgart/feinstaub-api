@@ -129,18 +129,59 @@ and run dump command:
 docker-compose run --rm db pg_dump -Fc -h db -v -U postgres feinstaub -f /opt/code/feinstaub-api-db.dump
 ```
 
---- 
+---
 
 ## Deployement
 
 To deploy the API, we use Dokku.
 
 ```
+ # for debian systems, installs dokku via apt-get
+ $ wget https://raw.githubusercontent.com/dokku/dokku/v0.11.3/bootstrap.sh
+ $ sudo DOKKU_TAG=v0.11.3 bash bootstrap.sh
+ # go to your server's IP and follow the web installer
+```
 
+### Install + Create Dependencies
+
+Once installed, we can do the following:
+
+1. Create the Dokku app
+
+```
 dokku apps:create sensors-aq-api
+```
+2. Install Postgres (Optional)
 
-dokku proxy:ports-set sensors-aq-api http:80:8000
+This is an optional step if you'd like to have Postgres installed locally;
 
+```
+sudo dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres
+dokku postgres:create sensors-aq-api-postgres
+
+```
+
+### Config
+
+```
+dokku config:set sensors-aq-api \
+    API_SECRET_KEY=... \
+    API_FORECAST_IO_KEY=... \
+    DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/NAME\
+    AWS_BUCKET_NAME=... \
+    AWS_URL_PREFIX=... \
+    AWS_SECRET_ACCESS_KEY=... \
+    AWS_REGION=... \
+    AWS_ACCESS_KEY=... \
+
+dokku proxy:ports-add sensors-aq-api http:80:8000
+
+```
+
+# Deploy
+```
+git remote add dokku dokku@api.aq.sensors.africa:sensors-aq-api
+git push dokku
 ```
 
 ---
@@ -166,4 +207,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
