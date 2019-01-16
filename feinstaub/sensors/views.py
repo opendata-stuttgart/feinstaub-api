@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.utils import timezone
 from django.views.generic.edit import FormView
 
-from rest_framework import mixins, viewsets, filters, pagination
+from rest_framework import mixins, viewsets, pagination
 from rest_framework.response import Response
 
 from .authentication import OwnerPermission, NodeUidAuthentication
@@ -82,7 +82,7 @@ class SensorDataView(mixins.ListModelMixin,
     serializer_class = VerboseSensorDataSerializer
     queryset = SensorData.objects.all()
     pagination_class = StandardResultsSetPagination
-    filter_backends = (filters.DjangoFilterBackend, )
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend, )
     filter_class = SensorFilter
 
     def get_queryset(self):
