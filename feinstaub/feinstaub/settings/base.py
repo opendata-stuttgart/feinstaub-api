@@ -122,5 +122,5 @@ TEMPLATES = [
 ]
 
 
-DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
-DBBACKUP_STORAGE_OPTIONS = {'location': '/opt/code/backup/'}
+DBBACKUP_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+DBBACKUP_STORAGE_OPTIONS = {'oauth2_access_token': os.getenv('DROPBOX_OAUTH2_ACCESS_TOKEN')}
