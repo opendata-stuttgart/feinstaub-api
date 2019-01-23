@@ -1,15 +1,20 @@
 version: "3"
 
 services:
+  db:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=sensorsaq
+      - POSTGRES_PASSWORD=sensorsaq
+      - POSTGRES_DB=sensorsaq
   web:
     build: .
     command: "runserver 0.0.0.0:8000"
     environment:
         PYTHONUNBUFFERED: 0
         DJANGO_SETTINGS_MODULE: feinstaub.settings.base
+        DATABASE_URL: postgres://sensorsaq:sensorsaq@db:5432/sensorsaq
     entrypoint:
      - './manage.py'
     links:
      - db
-  db:
-    image: postgres:9.6

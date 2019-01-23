@@ -70,7 +70,7 @@ class Command(BaseCommand):
                 qs=qs,
                 sensor=sensor,
             )
-
+            
             # Upload to s3
             if options.get('upload_s3'):
                 # if file exists on s3; overwrite. always
