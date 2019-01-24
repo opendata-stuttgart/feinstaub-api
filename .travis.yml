@@ -20,5 +20,6 @@ script:
   - docker-compose build --pull
   - docker-compose up -d
   - sleep 5
-  - docker-compose exec web py.test --pylama
+  # - docker-compose exec web pytest --pylama
+  - docker-compose exec web pytest
   - docker-compose run web pipchecker -r ../requirements.txt

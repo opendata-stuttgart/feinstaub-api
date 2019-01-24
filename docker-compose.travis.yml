@@ -1,15 +1,17 @@
 version: "3"
 
 services:
+  db:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_DB=feinstaub
   web:
     build: .
     command: "runserver 0.0.0.0:8000"
     environment:
         PYTHONUNBUFFERED: 0
         DJANGO_SETTINGS_MODULE: feinstaub.settings.base
-    entrypoint:
-     - './manage.py'
+        entrypoint:
+         - './manage.py'
     links:
      - db
-  db:
-    image: postgres:9.6
