@@ -1,4 +1,4 @@
-# sensors.AFRICA Air Quality API [![Build Status](https://travis-ci.org/CodeForAfricaLabs/sensors.AFRICA-AQ-api.svg?branch=master)](https://travis-ci.org/CodeForAfricaLabs/sensors.AFRICA-AQ-api)
+# feinstaub-api [![Build Status](https://travis-ci.org/opendata-stuttgart/feinstaub-api.svg?branch=master)](https://travis-ci.org/opendata-stuttgart/feinstaub-api)
 
 Api to save data from sensors (especially particulates sensors).
 
