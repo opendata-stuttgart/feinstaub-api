@@ -11,7 +11,7 @@ services:
     environment:
         PYTHONUNBUFFERED: 0
         DJANGO_SETTINGS_MODULE: feinstaub.settings.base
-        entrypoint:
-         - './manage.py'
+    entrypoint:
+      - './manage.py'
     links:
      - db
