@@ -180,7 +180,7 @@ dokku proxy:ports-add sensors-aq-api http:80:8000
 
 # Deploy
 ```
-git remote add dokku dokku@api.aq.sensors.africa:sensors-aq-api
+git remote add dokku dokku@<host>:sensors-aq-api
 git push dokku
 ```
 
