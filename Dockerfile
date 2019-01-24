@@ -30,7 +30,7 @@ ADD . /opt/code
 RUN chown -R uid1000: /opt
 
 WORKDIR /opt/code/feinstaub
-USER root
+USER uid1000
 
 # production stuff
 ENTRYPOINT ["./start.sh"]
