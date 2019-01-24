@@ -3,14 +3,11 @@ MAINTAINER Opendata Stuttgart
 
 ENV DEBIAN_FRONTEND noninteractive
 
-# Install repository containing postgresql-client-9.5
-RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main" >> /etc/apt/sources.list.d/postgresql.list'
-RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 RUN apt-get update && apt-get install -y \
 	lib32z1-dev \
 	libmemcached-dev \
 	locales \
-	postgresql-client-9.5 \
+	postgresql-client \
 	postgresql-server-dev-all \
 	sudo \
 	ttf-dejavu-core \
