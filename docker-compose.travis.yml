@@ -7,11 +7,11 @@ services:
       - POSTGRES_DB=feinstaub
   web:
     build: .
-    command: "runserver 0.0.0.0:8000"
+    command: "./manage.py runserver 0.0.0.0:8000"
     environment:
         PYTHONUNBUFFERED: 0
         DJANGO_SETTINGS_MODULE: feinstaub.settings.base
     entrypoint:
-      - './manage.py'
+      - './entrypoint.sh'
     links:
      - db
