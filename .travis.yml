@@ -17,4 +17,4 @@ script:
   - sleep 5
   # - docker-compose exec web pytest --pylama
   - docker-compose exec web pytest
-  - docker-compose run web pipchecker -r ../requirements.txt
+  - docker-compose exec web ./manage.py pipchecker -r ../requirements.txt
