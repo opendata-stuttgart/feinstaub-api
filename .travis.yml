@@ -7,11 +7,6 @@ python:
 env:
   - COMPOSE_FILE=docker-compose.travis.yml
 
-install:
-  - sudo apt-get update
-  - sudo apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" docker-engine
-  - sudo pip install docker-compose
-
 before_script:
   - docker version
   - docker-compose --version
@@ -20,5 +15,6 @@ script:
   - docker-compose build --pull
   - docker-compose up -d
   - sleep 5
-  - docker-compose exec web py.test --pylama
-  - docker-compose run web pipchecker -r ../requirements.txt
+  # - docker-compose exec web pytest --pylama
+  - docker-compose exec web pytest
+  - docker-compose exec web ./manage.py pipchecker -r ../requirements.txt
