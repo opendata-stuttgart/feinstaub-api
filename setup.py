@@ -1,12 +1,12 @@
 import setuptools
 
- with open("README.md", "r") as fh:
+with open("README.md", "r") as fh:
     long_description = fh.read()
 
- with open('requirements.txt') as f:
+with open('requirements.txt') as f:
     install_requires = f.read().splitlines()
 
- setuptools.setup(
+setuptools.setup(
     name="feinstaub",
     version="0.0.1",
     author="Feinstaub",
