@@ -1,4 +1,4 @@
-Django<1.11
+Django>=1.11,<2.0 #LTS
 django-extensions==2.1.4
 django-filter>=1.0.1,<1.1
 django-redis>=4.7.0,<4.8
