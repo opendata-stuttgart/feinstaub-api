@@ -1,6 +1,7 @@
 import datetime
 import django_filters
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Q
@@ -65,12 +66,17 @@ class SensorView(mixins.ListModelMixin,
 
 
 class SensorFilter(django_filters.FilterSet):
-    # allows timestamps like: 2015-09-19T23:20:15.702705Z
-    timestamp_newer = django_filters.IsoDateTimeFilter(name="timestamp", lookup_type='gte')
-
     class Meta:
         model = SensorData
-        fields = ['timestamp_newer', 'sensor']
+        fields = {"sensor": ["exact"], "timestamp": ["gte"]}
+        filter_overrides = {
+            models.DateTimeField: {
+                'filter_class': django_filters.IsoDateTimeFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'gte',
+                },
+            },
+        }
 
 
 class SensorDataView(mixins.ListModelMixin,
