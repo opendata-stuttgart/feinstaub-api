@@ -28,6 +28,10 @@ class Node(TimeStampedModel):
     email = models.EmailField(null=True, blank=True)
     last_notify = models.DateTimeField(null=True, blank=True)
     description_internal = models.TextField(null=True, blank=True) # for internal purposes, should never been provided via API / dump / ...
+    indoor = models.BooleanField(default=False)
+    inactive = models.BooleanField(default=False)
+    exact_location = models.BooleanField(default=False)
+
 
     class Meta:
         ordering = ['uid', ]
@@ -75,7 +79,7 @@ class SensorData(TimeStampedModel):
 SENSOR_TYPE_CHOICES = (
     # ppd42ns P1 -> 1µm / SDS011 P1 -> 10µm
     ('P0', '1µm particles'),
-    ('P1', '1µm particles'),
+    ('P1', '10µm particles'),
     ('P2', '2.5µm particles'),
     ('durP1', 'duration 1µm'),
     ('durP2', 'duration 2.5µm'),
@@ -84,11 +88,11 @@ SENSOR_TYPE_CHOICES = (
     ('samples', 'samples'),
     ('min_micro', 'min_micro'),
     ('max_micro', 'max_micro'),
-    # sht10-sht15; dht11, dht22; bmp180
+    # sht10-sht15; dht11, dht22; bmp180, bme280
     ('temperature', 'Temperature'),
-    # sht10-sht15; dht11, dht22
+    # sht10-sht15; dht11, dht22, bme280
     ('humidity', 'Humidity'),
-    # bmp180
+    # bmp180, bme280
     ('pressure', 'Pa'),
     ('altitude', 'meter'),
     ('pressure_sealevel', 'Pa (sealevel)'),
@@ -105,9 +109,9 @@ SENSOR_TYPE_CHOICES = (
     ('durP25', 'duration 2.5µm'),
     ('ratioP10', 'ratio 1µm in percent'),
     ('ratioP25', 'ratio 2.5µm in percent'),
-    #
+    ##
     ('door_state', 'door state (open/closed)'),
-    # gpssensor
+    ## gpssensor
     ('lat', 'latitude'),
     ('lon', 'longitude'),
     ('height', 'height'),
@@ -127,7 +131,7 @@ SENSOR_TYPE_CHOICES = (
 class SensorDataValue(TimeStampedModel):
 
     sensordata = models.ForeignKey(SensorData, related_name='sensordatavalues')
-    value = models.TextField(db_index=True)
+    value = models.TextField(null=False)
     value_type = models.CharField(max_length=100, choices=SENSOR_TYPE_CHOICES,
                                   db_index=True)
 
@@ -146,6 +150,7 @@ class SensorLocation(TimeStampedModel):
     location = models.TextField(null=True, blank=True)
     latitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
     longitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
+    altitude = models.DecimalField(max_digits=14, decimal_places=8, null=True, blank=True)
     indoor = models.BooleanField(default=False)
     street_name = models.TextField(null=True, blank=True)
     street_number = models.TextField(null=True, blank=True)
