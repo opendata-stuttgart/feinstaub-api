@@ -1,4 +1,4 @@
-# Data at archive.luftdaten.info
+# Data at archive.sensor.community
 
 ## about
 
