@@ -128,10 +128,10 @@ SENSOR_TYPE_CHOICES = (
     ##gas sensor
     ('co_kohm', 'CO in kOhm'),
     ('co_ppb','CO in ppb'),
-    ('co2','eCO2 in ppm'),
+    ('eco2','eCO2 in ppm'),
     ('no2_kohm', 'NO2 in kOhm'),
     ('no2_ppb','NO2 in ppb'),
-    ('ozone','O3 in ppb'),
+    ('ozone_ppb','O3 in ppb'),
     ('so2_ppb','SO2 in ppb'),
 )
 
