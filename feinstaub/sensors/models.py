@@ -167,6 +167,10 @@ class SensorLocation(TimeStampedModel):
 
     class Meta:
         ordering = ['location', ]
+        indexes = [
+            models.Index(fields=['country'], name='country_idx'),
+            models.Index(fields=['city'], name='city_idx'),
+        ]
 
     def __str__(self):
         return "{location}".format(location=self.location)
