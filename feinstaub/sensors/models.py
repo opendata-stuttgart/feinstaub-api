@@ -32,7 +32,6 @@ class Node(TimeStampedModel):
     inactive = models.BooleanField(default=False)
     exact_location = models.BooleanField(default=False)
 
-
     class Meta:
         ordering = ['uid', ]
 
@@ -86,11 +85,18 @@ SENSOR_TYPE_CHOICES = (
     ('ratioP1', 'ratio 1µm in percent'),
     ('ratioP2', 'ratio 2.5µm in percent'),
     ('samples', 'samples'),
+    ('interval', 'measurement interval'),
     ('min_micro', 'min_micro'),
     ('max_micro', 'max_micro'),
-    # sht10-sht15; dht11, dht22; bmp180, bme280
+    ('N05', 'count 0.5µm particles'),
+    ('N1', 'count 1µm particles'),
+    ('N25', 'count 2.5µm particles'),
+    ('N4', 'count 4µm particles'),
+    ('N10', 'count 1µm particles'),
+    ('TS', 'typical particle size'),
+    # sht10-sht15, dht11, dht22, bmp180, bme280
     ('temperature', 'Temperature'),
-    # sht10-sht15; dht11, dht22, bme280
+    # sht10-sht15, dht11, dht22, bme280
     ('humidity', 'Humidity'),
     # bmp180, bme280
     ('pressure', 'Pa'),
@@ -122,13 +128,24 @@ SENSOR_TYPE_CHOICES = (
     ('speed', 'current speed over ground'),
     ('azimuth', 'track angle'),
     ## noise sensor
+    ('noise_LA_min', 'Sound level min'),
+    ('noise_LA_max', 'Sound level max'),
     ('noise_L01', 'Sound level L01'),
     ('noise_L95', 'Sound level L95'),
     ('noise_Leq', 'Sound level Leq'),
+    ## radiation sensor
+    ('counts_per_second', 'Counts per second'),
+    ('counts_per_minute', 'Counts per minute'),
+    ('radiation_msi', 'MilliSievert'),
+    ('hv_pulses', 'Count of high voltage pulses'),
+    ('counts', 'Counts'),
+    ('radiation_msi', 'MilliSievert'),
+    ('sample_time_ms', 'Time per sample'),
     ##gas sensor
     ('co_kohm', 'CO in kOhm'),
     ('co_ppb','CO in ppb'),
     ('eco2','eCO2 in ppm'),
+    ('co2_ppb','CO2 in ppb'),
     ('no2_kohm', 'NO2 in kOhm'),
     ('no2_ppb','NO2 in ppb'),
     ('ozone_ppb','O3 in ppb'),
