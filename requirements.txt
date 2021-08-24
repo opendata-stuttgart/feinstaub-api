@@ -2,7 +2,7 @@ Django>=1.11,<2.0 #LTS
 django-extensions==2.1.4
 django-filter>=2.0.0,<3.0
 django-redis>=4.7.0,<4.8
-djangorestframework==3.9.1
+djangorestframework==3.11.2
 gunicorn==19.9.0
 ipython>=5.2.2,<5.3
 opbeat>=3.5.2,<3.6
